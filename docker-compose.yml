@@ -1,0 +1,19 @@
+﻿version: '2'
+
+services:
+   app:
+    build: .
+    environment:
+      COUCHDB_SERVER: http://verifishadmin:marineRubicon19!@127.0.0.1:5984
+      WORKPATH: /node_api/
+      LOGPATH: /node_api/logs
+      LOGFILEPATH: /node_api/logs/VERIFISH-API-Message.log
+      CONFIGSTRING: https://4228c58e-0ee0-4-231-b9ee.documents.azure.com:443/
+      CONFIGKEY: 4i8Xmwm2h1o7tykmCSlIRus2gwo7Luiif17N3SnbZW8efTJuKCkTUn5QBs8QZ2KQ8BBpdFWtvn7yAMD6OCUTGg==
+    volumes:
+      - .:/node_api
+      - ./logs:/node_api/logs
+      - /node_api/node_modules
+    network_mode: host
+
+

@@ -1,0 +1,78 @@
+{
+    "stock": {
+        "class": "stock",
+        "keyName": "stockId",
+        "primaryKey" : "/stockNumber",
+        "database_name": "stockDatabase",
+        "container_name": "Stock",
+        "methods": {
+            "checkExists": "stockExists",
+            "reading": "readStock",
+            "creating": "createstock",
+            "updating": "updatestock",
+            "get_history": "getHistoryForKey",
+            "get_state_by_range": "getStateByRange",
+            "get_query_result": "getQueryResult"
+        },
+        "lower_name": "stock",
+        "displayName": "Stock",
+        "indexes": ""
+    },
+    "batch": {
+        "class": "batchorders",
+        "keyName": "batchId",
+        "primaryKey" : "/batchOrder",
+        "database_name": "batchDatabase",
+        "container_name": "Batch",
+        "methods": {
+            "checkExists": "batchExists",
+            "reading": "readBatch",
+            "creating": "createBatch",
+            "updating": "updateBatch",
+            "get_history": "getHistoryForKey",
+            "get_state_by_range": "getStateByRange",
+            "get_query_result": "getQueryResult"
+        },
+        "lower_name": "batch",
+        "displayName": "Batch",
+        "indexes": "despatchDate"
+    },
+    "order": {
+        "class": "orders",
+        "keyName": "orderId",
+        "primaryKey" : "/orderNumber",
+        "database_name": "orderDatabase",
+        "container_name": "Orders",
+        "methods": {
+            "checkExists": "orderExists",
+            "reading": "readOrder",
+            "creating": "createOrder",
+            "updating": "updateOrder",
+            "get_history": "getHistoryForKey",
+            "get_state_by_range": "getStateByRange",
+            "get_query_result": "getQueryResult"
+        },
+        "lower_name": "order",
+        "displayName": "Order",
+        "indexes": "dateReceived,closed,orderNumber"
+    },
+    "raw_material": {
+        "class": "rawmaterials",
+        "keyName": "batchId",
+        "primaryKey" : "/batchNumber",
+        "database_name": "rawMaterialsDatabase",
+        "container_name": "RawMaterials",
+        "methods": {
+            "checkExists": "rawmaterialExists",
+            "reading": "readRawmaterial",
+            "creating": "createRawmaterial",
+            "updating": "updateRawmaterial",
+            "get_history": "getHistoryForKey",
+            "get_state_by_range": "getStateByRange",
+            "get_query_result": "getQueryResult"
+        },
+        "lower_name": "raw material",
+        "displayName": "Raw material",
+        "indexes": "intakeDate"
+    }
+}

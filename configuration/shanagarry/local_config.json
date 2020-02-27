@@ -1,0 +1,13 @@
+{
+  "connection_file": "local_fabric_connection.json",
+  "appAdmin": "app-admin",
+  "appAdminSecret": "app-adminpw",
+  "orgMSPID": "Org1MSP",
+  "caName": "ca.org1.example.com",
+  "userName": "User1@org1.example.com",
+  "wallet": "/local_fabric_wallet",
+  "channel": "mychannel",  
+  "gatewayDiscovery": {
+    "enabled": false
+  }
+}

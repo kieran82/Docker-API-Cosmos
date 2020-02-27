@@ -1,0 +1,14 @@
+{
+  "connection_file": "mychannel_profile.json",
+  "appAdmin": "app-admin",
+  "appAdminSecret": "app-adminpw",
+  "orgMSPID": "org1msp",
+  "caName": "n29a8bc-org1ca.mycluster-677965.eu-de.containers.appdomain.cloud:7054",
+  "userName": "User1@org1.example.com",
+  "wallet": "/wallet",
+  "channel": "mychannel",
+  "gatewayDiscovery": {
+    "enabled": true,
+    "asLocalhost": false
+  }
+}
