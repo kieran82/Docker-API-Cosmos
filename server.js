@@ -1,5 +1,5 @@
 /*﻿
-const express = require('express');
+
 const app = express();
 const bodyParser = require('body-parser');
 const log4js = require('log4js');
@@ -12,12 +12,15 @@ app.use('/api/check', require('./routes/checking'));
 let logpath = process.env.LOGFILEPATH;
 
 
-var server = app.listen(3000, function () {
+
+*/
+const express = require('express');
+const app = express();
+var server = app.listen(8080, function () {
 
     var host = server.address().address
     var port = server.address().port
 
     console.log("App listening at http://%s:%s", host, port);
 });
-*/
 console.log("Hello from verifish web app");
