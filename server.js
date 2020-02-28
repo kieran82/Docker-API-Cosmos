@@ -1,4 +1,5 @@
-﻿const express = require('express');
+/*﻿
+const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const log4js = require('log4js');
@@ -18,3 +19,5 @@ var server = app.listen(3000, function () {
 
     console.log("App listening at http://%s:%s", host, port);
 });
+*/
+console.log("Hello from verifish web app");
