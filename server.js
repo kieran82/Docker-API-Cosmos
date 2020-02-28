@@ -9,17 +9,7 @@ app.use('/api/blockchain', require('./routes/blockchain'));
 app.use('/api/get', require('./routes/getting'));
 app.use('/api/check', require('./routes/checking'));
 let logpath = process.env.LOGFILEPATH;
-log4js.configure({
-    appenders: {
-        VERIAPI: { type: 'file', filename: logpath, maxLogSize: 4194304, backups: 10, keepFileExt: true, compress: true, daysToKeep: 20 }
-    },
-    categories: {
-        default: { appenders: ['VERIAPI'], level: 'debug' }
-    }
-});
 
-const logger = log4js.getLogger('VERIAPI');
-logger.info('starting node app');
 
 var server = app.listen(8080, function () {
 
