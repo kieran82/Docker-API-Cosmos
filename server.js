@@ -1,4 +1,33 @@
-/*log4js.configure({
+/*
+
+app.use('/api/couchdb', require('./routes/couchdb'));
+app.use('/api/blockchain', require('./routes/blockchain'));
+app.use('/api/get', require('./routes/getting'));
+app.use('/api/check', require('./routes/checking'));
+*/
+const fs = require("fs");
+const log4js = require("log4js");
+const util = require("util");
+const TaskDao = require("./models/taskDao");
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+let contents = fs.readFileSync("site_config.json");
+let jsoncontents = JSON.parse(contents);
+let logpath = jsoncontents.log_file_path;
+let current_path_location = jsoncontents.work_path;
+console.log(JSON.stringify(contents));
+
+console.log("Check Body " + util.inspect(JSON.parse(contents), {
+                    showHidden: false,
+                    depth: null
+                }));
+
+console.log("config path app " + jsoncontents.config_url + "");
+log4js.configure({
     appenders: {
         VERIAPI: {
             type: "file",
@@ -17,35 +46,8 @@
         }
     }
 });
-
 const logger = log4js.getLogger("VERIAPI");
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use('/api/couchdb', require('./routes/couchdb'));
-app.use('/api/blockchain', require('./routes/blockchain'));
-app.use('/api/get', require('./routes/getting'));
-app.use('/api/check', require('./routes/checking'));
-let logpath = process.env.LOGFILEPATH;
-
-const TaskDao = require("../models/taskDao");
-
-*/
-const fs = require("fs");
-const log4js = require("log4js");
-const util = require("util");
-const express = require('express');
-const app = express();
-const bodyParser = require('body-parser');
-let contents = fs.readFileSync("site_config.json");
-console.log(contents);
-//let current_path_location = process.env.WORKPATH;
-//let logpath = process.env.LOGFILEPATH;
-
-
-
-
-
+logger.info("welcome to verifish");
 var server = app.listen(8080, function () {
 
     var host = server.address().address
