@@ -1,0 +1,8 @@
+{
+	"couchdb_path": "http://verifishadmin:marineRubicon19!@127.0.0.1:5984",
+    "work_path": "/node_api/",
+    "log_path": "/node_api/logs",
+    "log_file_path": "/node_api/logs/VERIFISH-API-Message.log",
+    "config_url" : "/https://f9bac7a2-0ee0-4-231-b9ee.documents.azure.com:443/",
+	"config_key": "HkM0dve6vimbEHLBKCvyJL9l6LEoTylktrbmsj2EFFid3vIm7bvsdLxrr8XRRZ5g7hWJgwBGb3zJpCWngOEPHg=="
+}
