@@ -11,7 +11,7 @@ app.use('/api/check', require('./routes/checking'));
 let logpath = process.env.LOGFILEPATH;
 
 
-var server = app.listen(8080, function () {
+var server = app.listen(3000, function () {
 
     var host = server.address().address
     var port = server.address().port
