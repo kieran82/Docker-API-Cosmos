@@ -40,15 +40,15 @@ module.exports = {
 
 		return str;
 	},
-	responseFormat: function (data=null,message,success,status_code) {
-		$response = {
+	responseFormat: function (data=null,message=null,success=true,status_code=200) {
+	let	response = {
 			'success': success,
 			'message': message,
 			'data': data,
 			'status_code': status_code,
 		};
 
-		return $response;
+		return response;
 	},	
 	IsJsonString: function (str) {
 		try {

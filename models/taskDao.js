@@ -1,5 +1,6 @@
 // @ts-check
-const CosmosClient = require('@azure/cosmos').CosmosClient;
+const CosmosClient = require("@azure/cosmos").CosmosClient;
+const tools = require("../src/func");
 // For simplicity we'll set a constant partition key
 class TaskDao {
   /**
@@ -60,19 +61,35 @@ class TaskDao {
     return replaced;
   }
 
-  async getItem(itemId,partitionKeyName) {
+  async getItem(itemId,partitionKeyName=null) {
     console.log('Getting an item from the database')
     if (!this.container) {
       throw new Error('Collection is not initialized.')
     }
-    const { resource } =  await this.container.item(itemId,partitionKeyName).read();
-    return resource;
+    if(!tools.isEmpty(partitionKeyName))
+    {
+      const { resource } =  await this.container.item(itemId,partitionKeyName).read();
+      return resource;
+    }
+    else
+    {
+      const { resource } =  await this.container.item(itemId).read();
+      return resource;
+    }
   }
 
-  async deleteItem(itemId,partitionKeyName) {
-    console.log('Getting an item from the database')
-    const { resource } = await this.container.item(itemId, partitionKeyName).delete()
-    return resource
+  async deleteItem(itemId,partitionKeyName=null) {
+    console.log('Getting an item from the database');
+    if(!tools.isEmpty(partitionKeyName))
+    {
+      const { resource } =  await this.container.item(itemId,partitionKeyName).delete();
+      return resource;
+    }
+    else
+    {
+      const { resource } =  await this.container.item(itemId).delete();
+      return resource;
+    }
   }
 }
 
