@@ -9,7 +9,9 @@ let jsoncontents = JSON.parse(scontents);
 let current_path_location = jsoncontents.work_path;
 let cosmos_config = jsoncontents.config_url;
 let cosmos_key = jsoncontents.config_key;
-let contents = fs.readFileSync(current_path_location + "json/blockchain_config.json");
+let contents = fs.readFileSync(
+    current_path_location + "json/blockchain_config.json"
+);
 let jsonContent = JSON.parse(contents);
 const checkroute = async (req, res) => {
     try {
@@ -28,35 +30,90 @@ const checkroute = async (req, res) => {
             endpoint: cosmos_config,
             key: cosmos_key
         });
-        const taskDao = new TaskDao(cosmosClient, databaseId, containerId, primaryKey);
-        taskDao.init().then(() => {
-            taskDao.getItem(DataIn.id, searchAddition).then(body => {
-                console.log(body);
-                console.log("Check Body " + util.inspect(body, {
-                    showHidden: false,
-                    depth: null
-                }));
-                console.log("" + classData.lower_name + " " + DataIn.id + ", data: " + util.inspect(body, {
-                    showHidden: false,
-                    depth: null
-                }) + "");
-                console.log("" + classData.lower_name + " " + DataIn.id + " exists");
-                res.send(tools.responseFormat(null, classData.lower_name + " " + DataIn.id + " exists", true, 200));
-            }).catch(err => {
-                console.error("Check Error " + util.inspect(err, {
-                    showHidden: false,
-                    depth: null
-                }));
+        const taskDao = new TaskDao(
+            cosmosClient,
+            databaseId,
+            containerId,
+            primaryKey
+        );
+        taskDao
+            .init()
+            .then(() => {
+                taskDao
+                    .getItem(DataIn.id, searchAddition)
+                    .then(body => {
+                        console.log(body);
+                        console.log(
+                            "Check Body " +
+                            util.inspect(body, {
+                                showHidden: false,
+                                depth: null
+                            })
+                        );
+                        console.log(
+                            "" +
+                            classData.lower_name +
+                            " " +
+                            DataIn.id +
+                            ", data: " +
+                            util.inspect(body, {
+                                showHidden: false,
+                                depth: null
+                            }) +
+                            ""
+                        );
+                        console.log(
+                            "" + classData.lower_name + " " + DataIn.id + " exists"
+                        );
+                        res.send(
+                            tools.responseFormat(
+                                null,
+                                classData.lower_name + " " + DataIn.id + " exists",
+                                true,
+                                200
+                            )
+                        );
+                    })
+                    .catch(err => {
+                        console.error(
+                            "Check Error " +
+                            util.inspect(err, {
+                                showHidden: false,
+                                depth: null
+                            })
+                        );
+                        console.error(err);
+                        res
+                            .status(404)
+                            .send(
+                                tools.responseFormat(
+                                    null,
+                                    DataIn.id + " " + classData.displayName + " does not exists",
+                                    false,
+                                    404
+                                )
+                            );
+                    });
+            })
+            .catch(err => {
                 console.error(err);
-                res.status(404).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " does not exists", false, 404));
+                res
+                    .status(404)
+                    .send(
+                        tools.responseFormat(
+                            null,
+                            "Database couldn't be created",
+                            false,
+                            404
+                        )
+                    );
             });
-        }).catch(err => {
-            console.error(err);
-            res.status(404).send(tools.responseFormat(null, "Database couldn't be created", false, 404));
-        });
-    } catch (e) { // this will eventually be handled by your error handling middleware
+    } catch (e) {
+        // this will eventually be handled by your error handling middleware
         console.error(e);
-        res.status(404).send(tools.responseFormat(null, "Error Occurred " + e, false, 404));
+        res
+            .status(404)
+            .send(tools.responseFormat(null, "Error Occurred " + e, false, 404));
     }
 };
 
@@ -86,48 +143,121 @@ const getitemroute = async (req, res) => {
         console.log("database is " + databaseId);
         console.log("container is " + containerId);
         console.log("addional key is " + additionalId);
-        const taskDao = new TaskDao(cosmosClient, databaseId, containerId, primaryKey);
-        taskDao.init().then(() => {
-            taskDao.getItem(DataIn.id, searchAddition).then(body => {
-                console.log(body);
-                console.log("Get Body " + util.inspect(body, {
-                    showHidden: false,
-                    depth: null
-                }));
-                if (!tools.isEmpty(body)) {
-                    console.log("" + classData.lower_name + " " + DataIn.id + ", data: " + util.inspect(body, {
+        const taskDao = new TaskDao(
+            cosmosClient,
+            databaseId,
+            containerId,
+            primaryKey
+        );
+        taskDao
+            .init()
+            .then(() => {
+                taskDao
+                    .getItem(DataIn.id, searchAddition)
+                    .then(body => {
+                        console.log(body);
+                        console.log(
+                            "Get Body " +
+                            util.inspect(body, {
+                                showHidden: false,
+                                depth: null
+                            })
+                        );
+                        if (!tools.isEmpty(body)) {
+                            console.log(
+                                "" +
+                                classData.lower_name +
+                                " " +
+                                DataIn.id +
+                                ", data: " +
+                                util.inspect(body, {
+                                    showHidden: false,
+                                    depth: null
+                                }) +
+                                ""
+                            );
+                            console.log(
+                                "" + classData.lower_name + " " + DataIn.id + " exists"
+                            );
+                            res.send(
+                                tools.responseFormat(
+                                    body,
+                                    classData.lower_name + " " + DataIn.id + " exists",
+                                    true,
+                                    200
+                                )
+                            );
+                        } else {
+                            console.log(
+                                "Get Body " +
+                                util.inspect(err, {
+                                    showHidden: false,
+                                    depth: null
+                                })
+                            );
+                            console.error(body);
+                            res
+                                .status(404)
+                                .send(
+                                    tools.responseFormat(
+                                        null,
+                                        DataIn.id +
+                                        " " +
+                                        classData.displayName +
+                                        " does not exists",
+                                        false,
+                                        404
+                                    )
+                                );
+                        }
+                    })
+                    .catch(err => {
+                        console.error(
+                            "Get Error " +
+                            util.inspect(err, {
+                                showHidden: false,
+                                depth: null
+                            })
+                        );
+                        console.error(err);
+                        res
+                            .status(404)
+                            .send(
+                                tools.responseFormat(
+                                    null,
+                                    DataIn.id + " " + classData.displayName + " does not exists",
+                                    false,
+                                    404
+                                )
+                            );
+                    });
+            })
+            .catch(err => {
+                console.error(
+                    "Init Error" +
+                    util.inspect(err, {
                         showHidden: false,
                         depth: null
-                    }) + "");
-                    console.log("" + classData.lower_name + " " + DataIn.id + " exists");
-                    res.send(tools.responseFormat(body, classData.lower_name + " " + DataIn.id + " exists", true, 200));
-                } else {
-                    console.log("Get Body " + util.inspect(err, {
-                        showHidden: false,
-                        depth: null
-                    }));
-                    console.error(body);
-                    res.status(404).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " does not exists", false, 404));
-                }
-            }).catch(err => {
-                console.error("Get Error " + util.inspect(err, {
-                    showHidden: false,
-                    depth: null
-                }));
+                    })
+                );
                 console.error(err);
-                res.status(404).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " does not exists", false, 404));
+                res
+                    .status(404)
+                    .send(
+                        tools.responseFormat(
+                            null,
+                            "Database couldn't be created",
+                            false,
+                            404
+                        )
+                    );
             });
-        }).catch(err => {
-            console.error("Init Error" + util.inspect(err, {
-                showHidden: false,
-                depth: null
-            }));
-            console.error(err);
-            res.status(404).send(tools.responseFormat(null, "Database couldn't be created", false, 404));
-        });
-    } catch (e) { // this will eventually be handled by your error handling middleware
+    } catch (e) {
+        // this will eventually be handled by your error handling middleware
         console.error(e);
-        res.status(404).send(tools.responseFormat(null, "Error Occurred " + e, false, 404));
+        res
+            .status(404)
+            .send(tools.responseFormat(null, "Error Occurred " + e, false, 404));
     }
 };
 
@@ -146,38 +276,99 @@ const deleteitemroute = async (req, res) => {
             endpoint: cosmos_config,
             key: cosmos_key
         });
-        const taskDao = new TaskDao(cosmosClient, databaseId, containerId, primaryKey);
-        taskDao.init().then(() => {
-            taskDao.deleteItem(DataIn.id, searchAddition).then(body => {
-                console.log("Delete Body " + util.inspect(body, {
-                    showHidden: false,
-                    depth: null
-                }));
-                console.log("" + classData.lower_name + " " + DataIn.id + ", data: " + util.inspect(body, {
-                    showHidden: false,
-                    depth: null
-                }) + "");
-                console.log("" + classData.lower_name + " " + DataIn.id + " deleted");
-                res.send(tools.responseFormat(body, classData.lower_name + " " + DataIn.id + " deleted", true, 200));
-            }).catch(err => {
-                console.error("Get Error " + util.inspect(err, {
-                    showHidden: false,
-                    depth: null
-                }));
+        const taskDao = new TaskDao(
+            cosmosClient,
+            databaseId,
+            containerId,
+            primaryKey
+        );
+        taskDao
+            .init()
+            .then(() => {
+                taskDao
+                    .deleteItem(DataIn.id, searchAddition)
+                    .then(body => {
+                        console.log(
+                            "Delete Body " +
+                            util.inspect(body, {
+                                showHidden: false,
+                                depth: null
+                            })
+                        );
+                        console.log(
+                            "" +
+                            classData.lower_name +
+                            " " +
+                            DataIn.id +
+                            ", data: " +
+                            util.inspect(body, {
+                                showHidden: false,
+                                depth: null
+                            }) +
+                            ""
+                        );
+                        console.log(
+                            "" + classData.lower_name + " " + DataIn.id + " deleted"
+                        );
+                        res.send(
+                            tools.responseFormat(
+                                body,
+                                classData.lower_name + " " + DataIn.id + " deleted",
+                                true,
+                                200
+                            )
+                        );
+                    })
+                    .catch(err => {
+                        console.error(
+                            "Get Error " +
+                            util.inspect(err, {
+                                showHidden: false,
+                                depth: null
+                            })
+                        );
+                        console.error(err);
+                        res
+                            .status(404)
+                            .send(
+                                tools.responseFormat(
+                                    null,
+                                    DataIn.id +
+                                    " " +
+                                    classData.displayName +
+                                    " couldn't be deleted",
+                                    false,
+                                    404
+                                )
+                            );
+                    });
+            })
+            .catch(err => {
+                console.error(
+                    "Get Error " +
+                    util.inspect(err, {
+                        showHidden: false,
+                        depth: null
+                    })
+                );
                 console.error(err);
-                res.status(404).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " couldn't be deleted", false, 404));
+                res
+                    .status(404)
+                    .send(
+                        tools.responseFormat(
+                            null,
+                            "Database couldn't be created",
+                            false,
+                            404
+                        )
+                    );
             });
-        }).catch(err => {
-            console.error("Get Error " + util.inspect(err, {
-                showHidden: false,
-                depth: null
-            }));
-            console.error(err);
-            res.status(404).send(tools.responseFormat(null, "Database couldn't be created", false, 404));
-        });
-    } catch (e) { // this will eventually be handled by your error handling middleware
+    } catch (e) {
+        // this will eventually be handled by your error handling middleware
         console.error(e);
-        res.status(404).send(tools.responseFormat(null, "Error Occurred " + e, false, 404));
+        res
+            .status(404)
+            .send(tools.responseFormat(null, "Error Occurred " + e, false, 404));
     }
 };
 
@@ -203,39 +394,100 @@ const additemroute = async (req, res) => {
         });
         console.log("" + classData.lower_name + " id results: " + id_variable);
         console.log("received results: " + JSON.stringify(DataIn));
-        console.log("adding " + classData.lower_name + " id " + id_variable + " with following data " + JSON.stringify(DataIn) + "");
-        const taskDao = new TaskDao(cosmosClient, databaseId, containerId, primaryKey);
-        taskDao.init().then(() => {
-            taskDao.addItem(DataIn).then(body => {
-                console.log("Add Body " + util.inspect(body, {
-                    showHidden: false,
-                    depth: null
-                }));
-                console.log("add Body: " + util.inspect(body, {
-                    showHidden: false,
-                    depth: null
-                }));
-                console.log("" + classData.displayName + " " + id_variable + " was added");
-                res.send(tools.responseFormat(null, classData.displayName + " was added", true, 200));
-            }).catch(err => {
-                console.error("add Error: " + util.inspect(err, {
-                    showHidden: false,
-                    depth: null
-                }));
+        console.log(
+            "adding " +
+            classData.lower_name +
+            " id " +
+            id_variable +
+            " with following data " +
+            JSON.stringify(DataIn) +
+            ""
+        );
+        const taskDao = new TaskDao(
+            cosmosClient,
+            databaseId,
+            containerId,
+            primaryKey
+        );
+        taskDao
+            .init()
+            .then(() => {
+                taskDao
+                    .addItem(DataIn)
+                    .then(body => {
+                        console.log(
+                            "Add Body " +
+                            util.inspect(body, {
+                                showHidden: false,
+                                depth: null
+                            })
+                        );
+                        console.log(
+                            "add Body: " +
+                            util.inspect(body, {
+                                showHidden: false,
+                                depth: null
+                            })
+                        );
+                        console.log(
+                            "" + classData.displayName + " " + id_variable + " was added"
+                        );
+                        res.send(
+                            tools.responseFormat(
+                                null,
+                                classData.displayName + " was added",
+                                true,
+                                200
+                            )
+                        );
+                    })
+                    .catch(err => {
+                        console.error(
+                            "add Error: " +
+                            util.inspect(err, {
+                                showHidden: false,
+                                depth: null
+                            })
+                        );
+                        console.error(err);
+                        res
+                            .status(404)
+                            .send(
+                                tools.responseFormat(
+                                    null,
+                                    classData.displayName + " was not added",
+                                    false,
+                                    404
+                                )
+                            );
+                    });
+            })
+            .catch(err => {
+                console.error(
+                    "add Error " +
+                    util.inspect(err, {
+                        showHidden: false,
+                        depth: null
+                    })
+                );
                 console.error(err);
-                res.status(404).send(tools.responseFormat(null, classData.displayName + " was not added", false, 404));
+                res
+                    .status(404)
+                    .send(
+                        tools.responseFormat(
+                            null,
+                            "Database couldn't be created",
+                            false,
+                            404
+                        )
+                    );
             });
-        }).catch(err => {
-            console.error("add Error " + util.inspect(err, {
-                showHidden: false,
-                depth: null
-            }));
-            console.error(err);
-            res.status(404).send(tools.responseFormat(null, "Database couldn't be created", false, 404));
-        });
-    } catch (e) { // this will eventually be handled by your error handling middleware
+    } catch (e) {
+        // this will eventually be handled by your error handling middleware
         console.error(e);
-        res.status(404).send(tools.responseFormat(null, "Error Occurred " + e, false, 404));
+        res
+            .status(404)
+            .send(tools.responseFormat(null, "Error Occurred " + e, false, 404));
     }
 };
 
@@ -260,38 +512,91 @@ const updateitemroute = async (req, res) => {
             id_variable = DataIn.id;
         }
         DataIn.id = id_variable;
-        const taskDao = new TaskDao(cosmosClient, databaseId, containerId, primaryKey);
-        taskDao.init().then(() => {
-            taskDao.updateItem(DataIn.id, searchAddition, DataIn).then(body => {
-                console.log("Update Body " + util.inspect(body, {
-                    showHidden: false,
-                    depth: null
-                }));
-                console.log("Update Body: " + util.inspect(body, {
-                    showHidden: false,
-                    depth: null
-                }));
-                console.log("" + classData.displayName + " " + id_variable + " was updated");
-                res.send(tools.responseFormat(null, classData.displayName + " was updated", true, 200));
-            }).catch(err => {
-                console.error("Update Error: " + util.inspect(err, {
-                    showHidden: false,
-                    depth: null
-                }));
+        const taskDao = new TaskDao(
+            cosmosClient,
+            databaseId,
+            containerId,
+            primaryKey
+        );
+        taskDao
+            .init()
+            .then(() => {
+                taskDao
+                    .updateItem(DataIn.id, searchAddition, DataIn)
+                    .then(body => {
+                        console.log(
+                            "Update Body " +
+                            util.inspect(body, {
+                                showHidden: false,
+                                depth: null
+                            })
+                        );
+                        console.log(
+                            "Update Body: " +
+                            util.inspect(body, {
+                                showHidden: false,
+                                depth: null
+                            })
+                        );
+                        console.log(
+                            "" + classData.displayName + " " + id_variable + " was updated"
+                        );
+                        res.send(
+                            tools.responseFormat(
+                                null,
+                                classData.displayName + " was updated",
+                                true,
+                                200
+                            )
+                        );
+                    })
+                    .catch(err => {
+                        console.error(
+                            "Update Error: " +
+                            util.inspect(err, {
+                                showHidden: false,
+                                depth: null
+                            })
+                        );
+                        console.error(err);
+                        res
+                            .status(404)
+                            .send(
+                                tools.responseFormat(
+                                    null,
+                                    classData.displayName + " was not updated",
+                                    false,
+                                    404
+                                )
+                            );
+                    });
+            })
+            .catch(err => {
+                console.error(
+                    "Update Error " +
+                    util.inspect(err, {
+                        showHidden: false,
+                        depth: null
+                    })
+                );
                 console.error(err);
-                res.status(404).send(tools.responseFormat(null, classData.displayName + " was not updated", false, 404));
+                res
+                    .status(404)
+                    .send(
+                        tools.responseFormat(
+                            null,
+                            "Database couldn't be created",
+                            false,
+                            404
+                        )
+                    );
             });
-        }).catch(err => {
-            console.error("Update Error " + util.inspect(err, {
-                showHidden: false,
-                depth: null
-            }));
-            console.error(err);
-            res.status(404).send(tools.responseFormat(null, "Database couldn't be created", false, 404));
-        });
-    } catch (e) { // this will eventually be handled by your error handling middleware
+    } catch (e) {
+        // this will eventually be handled by your error handling middleware
         console.error(e);
-        res.status(404).send(tools.responseFormat(null, "Error Occurred " + e, false, 404));
+        res
+            .status(404)
+            .send(tools.responseFormat(null, "Error Occurred " + e, false, 404));
     }
 };
 
@@ -299,8 +604,19 @@ const getQueryroute = async (req, res) => {
     try {
         let DataIn = req.body;
         if (!("query_string" in DataIn)) {
-            console.error("" + classData.displayName + "  querystring does not exists");
-            res.status(404).send(tools.responseFormat(null, "The query string does not exists", false, 404));
+            console.error(
+                "" + classData.displayName + "  querystring does not exists"
+            );
+            res
+                .status(404)
+                .send(
+                    tools.responseFormat(
+                        null,
+                        "The query string does not exists",
+                        false,
+                        404
+                    )
+                );
         }
         const classData = jsonContent[req.params.name];
         const primaryKey = classData.primaryKey;
@@ -320,44 +636,104 @@ const getQueryroute = async (req, res) => {
             endpoint: cosmos_config,
             key: cosmos_key
         });
-        const taskDao = new TaskDao(cosmosClient, databaseId, containerId, primaryKey);
-        taskDao.init().then(() => {
-            taskDao.find(DataIn.querystring).then(body => {
-                console.log("Query Body " + util.inspect(body, {
-                    showHidden: false,
-                    depth: null
-                }));
-                console.log("Query Body: " + util.inspect(body, {
-                    showHidden: false,
-                    depth: null
-                }));
-                console.log(JSON.stringify(body));
-                if (!tools.isEmpty(body)) {
-                    res.send(tools.responseFormat(body, "", true, 200));
-                } else {
-                    res.status(404).send(tools.responseFormat(null, classData.displayName + " query returned no result", false, 400));
-                }
-            }).catch(err => {
-                console.error("Query Error: " + util.inspect(err, {
-                    showHidden: false,
-                    depth: null
-                }));
+        const taskDao = new TaskDao(
+            cosmosClient,
+            databaseId,
+            containerId,
+            primaryKey
+        );
+        taskDao
+            .init()
+            .then(() => {
+                taskDao
+                    .find(DataIn.querystring)
+                    .then(body => {
+                        console.log(
+                            "Query Body " +
+                            util.inspect(body, {
+                                showHidden: false,
+                                depth: null
+                            })
+                        );
+                        console.log(
+                            "Query Body: " +
+                            util.inspect(body, {
+                                showHidden: false,
+                                depth: null
+                            })
+                        );
+                        console.log(JSON.stringify(body));
+                        if (!tools.isEmpty(body)) {
+                            res.send(tools.responseFormat(body, "", true, 200));
+                        } else {
+                            res
+                                .status(404)
+                                .send(
+                                    tools.responseFormat(
+                                        null,
+                                        classData.displayName + " query returned no result",
+                                        false,
+                                        400
+                                    )
+                                );
+                        }
+                    })
+                    .catch(err => {
+                        console.error(
+                            "Query Error: " +
+                            util.inspect(err, {
+                                showHidden: false,
+                                depth: null
+                            })
+                        );
+                        console.error(err);
+                        console.error("" + classData.displayName + " query result empty");
+                        res
+                            .status(404)
+                            .send(
+                                tools.responseFormat(
+                                    null,
+                                    classData.displayName + " query returned no result",
+                                    false,
+                                    400
+                                )
+                            );
+                    });
+            })
+            .catch(err => {
+                console.error(
+                    "Query Error " +
+                    util.inspect(err, {
+                        showHidden: false,
+                        depth: null
+                    })
+                );
                 console.error(err);
-                console.error("" + classData.displayName + " query result empty");
-                res.status(404).send(tools.responseFormat(null, classData.displayName + " query returned no result", false, 400));
+                console.error(err);
+                res
+                    .status(404)
+                    .send(
+                        tools.responseFormat(
+                            null,
+                            "Database couldn't be created",
+                            false,
+                            404
+                        )
+                    );
             });
-        }).catch(err => {
-            console.error("Query Error " + util.inspect(err, {
-                showHidden: false,
-                depth: null
-            }));
-            console.error(err);
-            console.error(err);
-            res.status(404).send(tools.responseFormat(null, "Database couldn't be created", false, 404));
-        });
-    } catch (e) { // this will eventually be handled by your error handling middleware
+    } catch (e) {
+        // this will eventually be handled by your error handling middleware
         console.error(e);
-        res.status(404).send(tools.responseFormat(null, classData.displayName + " query returned no result", false, 404));
+        res
+            .status(404)
+            .send(
+                tools.responseFormat(
+                    null,
+                    classData.displayName + " query returned no result",
+                    false,
+                    404
+                )
+            );
     }
 };
 
@@ -384,52 +760,117 @@ const getRangeroute = async (req, res) => {
             endpoint: cosmos_config,
             key: cosmos_key
         });
-        const taskDao = new TaskDao(cosmosClient, databaseId, containerId, primaryKey);
-        taskDao.init().then(() => {
-            taskDao.find(querySpec).then(body => {
-                console.log("Query Body " + util.inspect(body, {
-                    showHidden: false,
-                    depth: null
-                }));
-                console.log("Query Body: " + util.inspect(body, {
-                    showHidden: false,
-                    depth: null
-                }));
-                console.log(
-                    "check " +
-                    classData.displayName +
-                    " for a range of ids from " +
-                    DataIn.range_from +
-                    " to " +
-                    DataIn.range_to +
-                    ""
+        const taskDao = new TaskDao(
+            cosmosClient,
+            databaseId,
+            containerId,
+            primaryKey
+        );
+        taskDao
+            .init()
+            .then(() => {
+                taskDao
+                    .find(querySpec)
+                    .then(body => {
+                        console.log(
+                            "Query Body " +
+                            util.inspect(body, {
+                                showHidden: false,
+                                depth: null
+                            })
+                        );
+                        console.log(
+                            "Query Body: " +
+                            util.inspect(body, {
+                                showHidden: false,
+                                depth: null
+                            })
+                        );
+                        console.log(
+                            "check " +
+                            classData.displayName +
+                            " for a range of ids from " +
+                            DataIn.range_from +
+                            " to " +
+                            DataIn.range_to +
+                            ""
+                        );
+                        console.log(JSON.stringify(body));
+                        if (!tools.isEmpty(body)) {
+                            res.send(tools.responseFormat(body, "", true, 200));
+                        } else {
+                            res
+                                .status(404)
+                                .send(
+                                    tools.responseFormat(
+                                        null,
+                                        classData.displayName + " ranges were not found",
+                                        false,
+                                        400
+                                    )
+                                );
+                        }
+                    })
+                    .catch(err => {
+                        console.error(
+                            "Query Error: " +
+                            util.inspect(err, {
+                                showHidden: false,
+                                depth: null
+                            })
+                        );
+                        console.error(err);
+                        console.error("" + classData.displayName + " query result empty");
+                        res
+                            .status(404)
+                            .send(
+                                tools.responseFormat(
+                                    null,
+                                    classData.displayName + " query returned no result",
+                                    false,
+                                    400
+                                )
+                            );
+                    });
+            })
+            .catch(err => {
+                console.error(
+                    "Query  Body " +
+                    util.inspect(err, {
+                        showHidden: false,
+                        depth: null
+                    })
                 );
-                console.log(JSON.stringify(body));
-                if (!tools.isEmpty(body)) {
-                    res.send(tools.responseFormat(body, "", true, 200));
-                } else {
-                    res.status(404).send(tools.responseFormat(null, classData.displayName + " ranges were not found", false, 400));
-                }
-            }).catch(err => {
-                console.error("Query Error: " + util.inspect(err, {
-                    showHidden: false,
-                    depth: null
-                }));
                 console.error(err);
-                console.error("" + classData.displayName + " query result empty");
-                res.status(404).send(tools.responseFormat(null, classData.displayName + " query returned no result", false, 400));
+                res
+                    .status(404)
+                    .send(
+                        tools.responseFormat(
+                            null,
+                            "Database couldn't be created",
+                            false,
+                            404
+                        )
+                    );
             });
-        }).catch(err => {
-            console.error("Query  Body " + util.inspect(err, {
-                showHidden: false,
-                depth: null
-            }));
-            console.error(err);
-            res.status(404).send(tools.responseFormat(null, "Database couldn't be created", false, 404));
-        });
-    } catch (e) { // this will eventually be handled by your error handling middleware
+    } catch (e) {
+        // this will eventually be handled by your error handling middleware
         console.error(e);
-        res.status(404).send(tools.responseFormat(null, classData.displayName + "  range from " + range_from + " to " + range_to + " does not exists", false, 404));
+        res
+            .status(404)
+            .send(
+                tools.responseFormat(
+                    null,
+                    classData.displayName +
+                    "  range from " +
+                    range_from +
+                    " to " +
+                    range_to +
+                    " does not exists",
+                    false,
+                    404
+                )
+            );
     }
 };
 
