@@ -1,4 +1,3 @@
-require("dotenv").config();
 const CosmosClient = require("@azure/cosmos").CosmosClient;
 const tools = require("../src/func");
 const asyncRoute = require("route-async");
@@ -6,7 +5,6 @@ const fs = require("fs");
 const util = require("util");
 const TaskDao = require("../models/taskDao");
 let scontents = fs.readFileSync("site_config.json");
-import parseBearerToken from "parse-bearer-token";
 let jsoncontents = JSON.parse(scontents);
 let current_path_location = jsoncontents.work_path;
 let cosmos_config = jsoncontents.config_url;
@@ -15,13 +13,6 @@ let contents = fs.readFileSync(current_path_location + "json/blockchain_config.j
 let jsonContent = JSON.parse(contents);
 const checkroute = async (req, res) => {
     try {
-        // const token = parseBearerToken(req);
-        // if (! token) {
-        //     res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token missing", false, 401));
-        // } else if (token != process.env.JWT_SECRET) {
-        //     res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token invalid", false, 401));
-        // }
-
         let DataIn = req.body;
         console.log("name: " + req.params.name);
         console.log("folder: " + DataIn.folder_path);
@@ -68,8 +59,6 @@ const checkroute = async (req, res) => {
 
 const getitemroute = async (req, res) => {
     try {
-        const token = parseBearerToken(req);
-        consol.log("token is " + token);
         const DataIn = tools.convertJSONString(req.body);
         const classData = jsonContent[req.params.name];
         console.log("" + classData.lower_name + " id results: " + DataIn.id);
@@ -140,12 +129,6 @@ const getitemroute = async (req, res) => {
 
 const deleteitemroute = async (req, res) => {
     try {
-        // const token = parseBearerToken(req);
-        // if (! token) {
-        //     res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token missing", false, 401));
-        // } else if (token != process.env.JWT_SECRET) {
-        //     res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token invalid", false, 401));
-        // }
         let DataIn = req.body;
         const classData = jsonContent[req.params.name];
         console.log("" + classData.lower_name + " id results: " + DataIn.id);
@@ -193,12 +176,6 @@ const deleteitemroute = async (req, res) => {
 
 const additemroute = async (req, res) => {
     try {
-        // const token = parseBearerToken(req);
-        // if (! token) {
-        //     res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token missing", false, 401));
-        // } else if (token != process.env.JWT_SECRET) {
-        //     res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token invalid", false, 401));
-        // }
         const DataIn = tools.convertJSONString(req.body);
         console.log("input results: " + JSON.stringify(DataIn));
         const classData = jsonContent[req.params.name];
@@ -254,12 +231,6 @@ const additemroute = async (req, res) => {
 const updateitemroute = async (req, res) => {
     try {
         let DataIn = req.body;
-        // const token = parseBearerToken(req);
-        // if (! token) {
-        //     res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token missing", false, 401));
-        // } else if (token != process.env.JWT_SECRET) {
-        //     res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token invalid", false, 401));
-        // }
         const classData = jsonContent[req.params.name];
         const primaryKey = classData.primaryKey;
         const databaseId = classData.database_name;
@@ -311,12 +282,6 @@ const updateitemroute = async (req, res) => {
 
 const getQueryroute = async (req, res) => {
     try {
-        // const token = parseBearerToken(req);
-        // if (! token) {
-        //     res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token missing", false, 401));
-        // } else if (token != process.env.JWT_SECRET) {
-        //     res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token invalid", false, 401));
-        // }
         let DataIn = req.body;
         if (!("query_string" in DataIn)) {
             console.error("" + classData.displayName + "  querystring does not exists");
@@ -382,12 +347,6 @@ const getQueryroute = async (req, res) => {
 
 const getRangeroute = async (req, res) => {
     try {
-        // const token = parseBearerToken(req);
-        // if (! token) {
-        //     res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token missing", false, 401));
-        // } else if (token != process.env.JWT_SECRET) {
-        //     res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token invalid", false, 401));
-        // }
         let DataIn = req.body;
         const querySpec = {
             query: "SELECT * FROM root r WHERE r.id >= @idstart AND r.id <= @idend",
