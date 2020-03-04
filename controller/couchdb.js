@@ -1,4 +1,4 @@
-require("dotenv").config();
+//require("dotenv").config();
 const CosmosClient = require("@azure/cosmos").CosmosClient;
 const tools = require("../src/func");
 const asyncRoute = require("route-async");
@@ -69,11 +69,7 @@ const checkroute = async (req, res) => {
 const getitemroute = async (req, res) => {
     try {
         const token = parseBearerToken(req);
-        if (! token) {
-            res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token missing", false, 401));
-        } else if (token != process.env.JWT_SECRET) {
-            res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token invalid", false, 401));
-        }
+        consol.log("token is " + token);
         const DataIn = tools.convertJSONString(req.body);
         const classData = jsonContent[req.params.name];
         console.log("" + classData.lower_name + " id results: " + DataIn.id);
