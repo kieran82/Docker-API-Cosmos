@@ -1,5 +1,4 @@
-﻿require("dotenv").config();
-const CosmosClient = require("@azure/cosmos").CosmosClient;
+﻿const CosmosClient = require("@azure/cosmos").CosmosClient;
 const tools = require("../src/func");
 const asyncRoute = require("route-async");
 const fs = require("fs");
@@ -18,13 +17,6 @@ let jsonContent = JSON.parse(contents);
 
 const checkroute = async (req, res) => {
     try {
-        const token = parseBearerToken(req);
-        if (! token) {
-            res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token missing", false, 401));
-        } else if (token != process.env.JWT_SECRET) {
-            res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token invalid", false, 401));
-        }
-
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
             res.status(404).send(tools.responseFormat(null, "database prefix is missing", false, 404));
@@ -107,13 +99,6 @@ const checkroute = async (req, res) => {
 
 const getitemroute = async (req, res) => {
     try {
-        const token = parseBearerToken(req);
-        if (! token) {
-            res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token missing", false, 401));
-        } else if (token != process.env.JWT_SECRET) {
-            res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token invalid", false, 401));
-        }
-
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
             res.status(404).send(tools.responseFormat(null, "database prefix is missing", false, 404));
@@ -193,13 +178,6 @@ const getitemroute = async (req, res) => {
 
 const deleteitemroute = async (req, res) => {
     try {
-        const token = parseBearerToken(req);
-        if (! token) {
-            res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token missing", false, 401));
-        } else if (token != process.env.JWT_SECRET) {
-            res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token invalid", false, 401));
-        }
-
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
             res.status(404).send(tools.responseFormat(null, "database prefix is missing", false, 404));
@@ -280,13 +258,6 @@ const deleteitemroute = async (req, res) => {
 
 const additemroute = async (req, res) => {
     try {
-        const token = parseBearerToken(req);
-        if (! token) {
-            res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token missing", false, 401));
-        } else if (token != process.env.JWT_SECRET) {
-            res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token invalid", false, 401));
-        }
-
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
             res.status(404).send(tools.responseFormat(null, "database prefix is missing", false, 404));
@@ -369,13 +340,6 @@ const additemroute = async (req, res) => {
 
 const updateitemroute = async (req, res) => {
     try {
-        const token = parseBearerToken(req);
-        if (! token) {
-            res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token missing", false, 401));
-        } else if (token != process.env.JWT_SECRET) {
-            res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token invalid", false, 401));
-        }
-
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
             res.status(404).send(tools.responseFormat(null, "database prefix is missing", false, 404));
@@ -453,13 +417,6 @@ const updateitemroute = async (req, res) => {
 
 const getHistoryroute = async (req, res) => {
     try {
-        const token = parseBearerToken(req);
-        if (! token) {
-            res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token missing", false, 401));
-        } else if (token != process.env.JWT_SECRET) {
-            res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token invalid", false, 401));
-        }
-
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
             res.status(404).send(tools.responseFormat(null, "database prefix is missing", false, 404));
@@ -532,13 +489,6 @@ const getHistoryroute = async (req, res) => {
 
 const getRangeroute = async (req, res) => {
     try {
-        const token = parseBearerToken(req);
-        if (! token) {
-            res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token missing", false, 401));
-        } else if (token != process.env.JWT_SECRET) {
-            res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token invalid", false, 401));
-        }
-
         let DataIn = req.body;
         let classData = jsonContent[req.params.name];
         let class_name = sprintf("%s_%s", DataIn.folder_path, classData.class);
@@ -621,13 +571,6 @@ const getRangeroute = async (req, res) => {
 
 const getQueryroute = async (req, res) => {
     try {
-        const token = parseBearerToken(req);
-        if (! token) {
-            res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token missing", false, 401));
-        } else if (token != process.env.JWT_SECRET) {
-            res.status(401).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + "token invalid", false, 401));
-        }
-
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
             res.status(404).send(tools.responseFormat(null, "database prefix is missing", false, 404));

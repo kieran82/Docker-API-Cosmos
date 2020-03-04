@@ -3,6 +3,6 @@
     "work_path": "/node_api/",
     "log_path": "/home/LogFiles/logs",
     "log_file_path": "/home/LogFiles/VERIFISH-API-Message.log",
-    "config_url" : "https://f9bac7a2-0ee0-4-231-b9ee.documents.azure.com:443/",
-	"config_key": "HkM0dve6vimbEHLBKCvyJL9l6LEoTylktrbmsj2EFFid3vIm7bvsdLxrr8XRRZ5g7hWJgwBGb3zJpCWngOEPHg=="
+    "config_url" : "https://verifish-cosmos.documents.azure.com:443/",
+	"config_key": "rwK7XcAYHhQ7n0i5HmUM8fZUtOExmgMRpYPSZ6tJWWAYRR2R8lR1Ri3HYzh8foIzSbcJUev2YDzSkUnZ3UiO1w=="
 }
