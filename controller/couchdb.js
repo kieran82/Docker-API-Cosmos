@@ -1,4 +1,3 @@
-require('dotenv').config();
 const CosmosClient = require("@azure/cosmos").CosmosClient;
 const tools = require("../src/func");
 const asyncRoute = require("route-async");
@@ -13,7 +12,6 @@ let cosmos_key = jsoncontents.config_key;
 let contents = fs.readFileSync(current_path_location + "json/blockchain_config.json");
 let jsonContent = JSON.parse(contents);
 let rr = process.env.JWT_SECRET;
-console.log("env file var is" + rr + "");
 const checkroute = async (req, res) => {
     try {
         let DataIn = req.body;
