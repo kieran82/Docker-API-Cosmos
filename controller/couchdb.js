@@ -11,7 +11,6 @@ let cosmos_config = jsoncontents.config_url;
 let cosmos_key = jsoncontents.config_key;
 let contents = fs.readFileSync(current_path_location + "json/blockchain_config.json");
 let jsonContent = JSON.parse(contents);
-let rr = process.env.JWT_SECRET;
 const checkroute = async (req, res) => {
     try {
         let DataIn = req.body;
@@ -25,7 +24,10 @@ const checkroute = async (req, res) => {
         const additionalId = primaryKey.substring(1);
         const searchAddition = DataIn[additionalId];
         const containerId = DataIn.folder_path + "" + classData.container_name;
-        const cosmosClient = new CosmosClient({endpoint: cosmos_config, key: cosmos_key});
+        const cosmosClient = new CosmosClient({
+            endpoint: cosmos_config,
+            key: cosmos_key
+        });
         const taskDao = new TaskDao(cosmosClient, databaseId, containerId, primaryKey);
         taskDao.init().then(() => {
             taskDao.getItem(DataIn.id, searchAddition).then(body => {
@@ -69,16 +71,17 @@ const getitemroute = async (req, res) => {
         const searchAddition = DataIn[additionalId];
         const databaseId = classData.database_name;
         const containerId = DataIn.folder_path + "" + classData.container_name;
-        const cosmosClient = new CosmosClient({endpoint: cosmos_config, key: cosmos_key});
+        const cosmosClient = new CosmosClient({
+            endpoint: cosmos_config,
+            key: cosmos_key
+        });
 
         const querySpec = {
             query: "SELECT * FROM root r WHERE r.id = @id",
-            parameters: [
-                {
-                    name: "@id",
-                    value: DataIn.id
-                }
-            ]
+            parameters: [{
+                name: "@id",
+                value: DataIn.id
+            }]
         };
         console.log("database is " + databaseId);
         console.log("container is " + containerId);
@@ -91,7 +94,7 @@ const getitemroute = async (req, res) => {
                     showHidden: false,
                     depth: null
                 }));
-                if (! tools.isEmpty(body)) {
+                if (!tools.isEmpty(body)) {
                     console.log("" + classData.lower_name + " " + DataIn.id + ", data: " + util.inspect(body, {
                         showHidden: false,
                         depth: null
@@ -139,7 +142,10 @@ const deleteitemroute = async (req, res) => {
         const additionalId = primaryKey.substring(1);
         const searchAddition = DataIn[additionalId];
         const containerId = DataIn.folder_path + "" + classData.container_name;
-        const cosmosClient = new CosmosClient({endpoint: cosmos_config, key: cosmos_key});
+        const cosmosClient = new CosmosClient({
+            endpoint: cosmos_config,
+            key: cosmos_key
+        });
         const taskDao = new TaskDao(cosmosClient, databaseId, containerId, primaryKey);
         taskDao.init().then(() => {
             taskDao.deleteItem(DataIn.id, searchAddition).then(body => {
@@ -185,12 +191,16 @@ const additemroute = async (req, res) => {
             id_variable = DataIn[classData.keyName];
         } else {
             id_variable = DataIn.id;
-        } DataIn.id = id_variable;
+        }
+        DataIn.id = id_variable;
         const primaryKey = classData.primaryKey;
         const databaseId = classData.database_name;
         let containerId = DataIn.folder_path + "" + classData.container_name;
         delete DataIn.folder_path;
-        const cosmosClient = new CosmosClient({endpoint: cosmos_config, key: cosmos_key});
+        const cosmosClient = new CosmosClient({
+            endpoint: cosmos_config,
+            key: cosmos_key
+        });
         console.log("" + classData.lower_name + " id results: " + id_variable);
         console.log("received results: " + JSON.stringify(DataIn));
         console.log("adding " + classData.lower_name + " id " + id_variable + " with following data " + JSON.stringify(DataIn) + "");
@@ -239,13 +249,17 @@ const updateitemroute = async (req, res) => {
         delete DataIn.folder_path;
         const additionalId = primaryKey.substring(1);
         const searchAddition = DataIn[additionalId];
-        const cosmosClient = new CosmosClient({endpoint: cosmos_config, key: cosmos_key});
+        const cosmosClient = new CosmosClient({
+            endpoint: cosmos_config,
+            key: cosmos_key
+        });
         let id_variable = "";
         if (!("id" in DataIn)) {
             id_variable = DataIn[classData.keyName];
         } else {
             id_variable = DataIn.id;
-        } DataIn.id = id_variable;
+        }
+        DataIn.id = id_variable;
         const taskDao = new TaskDao(cosmosClient, databaseId, containerId, primaryKey);
         taskDao.init().then(() => {
             taskDao.updateItem(DataIn.id, searchAddition, DataIn).then(body => {
@@ -296,15 +310,16 @@ const getQueryroute = async (req, res) => {
 
         const querySpec = {
             query: "SELECT * FROM root r WHERE r.id = @id",
-            parameters: [
-                {
-                    name: "@id",
-                    value: DataIn.id
-                }
-            ]
+            parameters: [{
+                name: "@id",
+                value: DataIn.id
+            }]
         };
 
-        const cosmosClient = new CosmosClient({endpoint: cosmos_config, key: cosmos_key});
+        const cosmosClient = new CosmosClient({
+            endpoint: cosmos_config,
+            key: cosmos_key
+        });
         const taskDao = new TaskDao(cosmosClient, databaseId, containerId, primaryKey);
         taskDao.init().then(() => {
             taskDao.find(DataIn.querystring).then(body => {
@@ -317,7 +332,7 @@ const getQueryroute = async (req, res) => {
                     depth: null
                 }));
                 console.log(JSON.stringify(body));
-                if (! tools.isEmpty(body)) {
+                if (!tools.isEmpty(body)) {
                     res.send(tools.responseFormat(body, "", true, 200));
                 } else {
                     res.status(404).send(tools.responseFormat(null, classData.displayName + " query returned no result", false, 400));
@@ -351,21 +366,22 @@ const getRangeroute = async (req, res) => {
         let DataIn = req.body;
         const querySpec = {
             query: "SELECT * FROM root r WHERE r.id >= @idstart AND r.id <= @idend",
-            parameters: [
-                {
-                    name: "@idstart",
-                    value: DataIn.range_from
-                }, {
-                    name: "@idend",
-                    value: DataIn.range_to
-                }
-            ]
+            parameters: [{
+                name: "@idstart",
+                value: DataIn.range_from
+            }, {
+                name: "@idend",
+                value: DataIn.range_to
+            }]
         };
         const classData = jsonContent[req.params.name];
         const primaryKey = classData.primaryKey;
         const databaseId = classData.database_name;
         let containerId = DataIn.folder_path + "" + classData.container_name;
-        const cosmosClient = new CosmosClient({endpoint: cosmos_config, key: cosmos_key});
+        const cosmosClient = new CosmosClient({
+            endpoint: cosmos_config,
+            key: cosmos_key
+        });
         const taskDao = new TaskDao(cosmosClient, databaseId, containerId, primaryKey);
         taskDao.init().then(() => {
             taskDao.find(querySpec).then(body => {
@@ -379,7 +395,7 @@ const getRangeroute = async (req, res) => {
                 }));
                 console.log("check " + classData.displayName + " for a range of ids from " + DataIn.range_from + " to " + DataIn.range_to + "");
                 console.log(JSON.stringify(body));
-                if (! tools.isEmpty(body)) {
+                if (!tools.isEmpty(body)) {
                     res.send(tools.responseFormat(body, "", true, 200));
                 } else {
                     res.status(404).send(tools.responseFormat(null, classData.displayName + " ranges were not found", false, 400));

@@ -23,7 +23,7 @@
         "keyName": "batchId",
         "primaryKey" : "/batchOrder",
         "database_name": "batchDatabase",
-        "container_name": "Batch",
+        "container_name": "Batches",
         "methods": {
             "checkExists": "batchExists",
             "reading": "readBatch",

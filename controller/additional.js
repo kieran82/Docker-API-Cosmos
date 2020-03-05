@@ -1,55 +1,41 @@
 const asyncRoute = require("route-async");
-const request = require("request");
+const tools = require("../src/func");
 const rp = require("request-promise");
 const sprintf = require("sprintf-js").sprintf;
-const urlRequest = option => {
-  return new Promise((resolve, reject) => {
-    request.post(option, function(error, response, data) {
-      if (error) reject(error);
-
-      let content = JSON.parse(data);
-      resolve(content);
-    });
-  });
-};
-
 const checkUserExistsroute = async (req, res) => {
   try {
     console.log("testing script results: " + req.params.id);
-    let current_url = sprintf(
-      "https://login.veri.fish/Api/public/v1/validate/exists/user/%s",
-      req.params.id
-    );
     let options = {
-      uri: current_url,
+      method: "POST",
+      uri: "https://api.veri.fish/v1/checking/user_exists",
       auth: {
         bearer: "2da17b15-1c5c-446c-b39e-1a8d7933f60a"
-      }
+      },
+      form: {
+        customer_id:  req.params.id
+    },
     };
 
     rp(options)
-      .then(function(body) {
+      .then(function (body) {
         console.log("users checking result " + body);
-        res.send(body);
+        res.send(tools.responseFormat(body, "Success", true, 200));
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.error("users checking result " + err);
-        res.status(404).json({
-          message: err
-        });
+        res.send(tools.responseFormat(null, err, false, 400));
       });
   } catch (e) {
     //this will eventually be handled by your error handling middleware
     console.error(e);
-    res.status(404).json({
-      message: e
-    });
+    res.send(tools.responseFormat(null, e, false, 400));
   }
 };
 
 const checkFipExistsroute = async (req, res) => {
   try {
     let opts = {
+      method: "POST",
       headers: {
         "content-type": "application/x-www-form-urlencoded"
       },
@@ -62,28 +48,26 @@ const checkFipExistsroute = async (req, res) => {
       }
     };
 
-    urlRequest(opts)
-      .then(function(body) {
+    rp(opts)
+      .then(function (body) {
         console.log("users checking result " + body);
-        res.send(body);
+        res.send(tools.responseFormat(body, "Success", true, 200));
       })
-      .catch(function(err) {
-        console.error(err);
-        res.statusMessage = err;
-        res.status(404).end();
+      .catch(function (err) {
+        console.error("users checking result " + err);
+        res.send(tools.responseFormat(null, err, false, 400));
       });
   } catch (e) {
     //this will eventually be handled by your error handling middleware
     console.error(e);
-    res.status(404).json({
-      message: e
-    });
+    res.send(tools.responseFormat(null, e, false, 400));
   }
 };
 
 const getBlockchainDetailsroute = async (req, res) => {
   try {
     let opts = {
+      method: "POST",
       headers: {
         "content-type": "application/x-www-form-urlencoded"
       },
@@ -97,24 +81,19 @@ const getBlockchainDetailsroute = async (req, res) => {
       }
     };
 
-    urlRequest(opts)
-      .then(function(body) {
-        console.log(
-          "blockchain user reference " + req.params.user_ref + ", exists"
-        );
-        res.send(JSON.stringify(body));
+    rp(opts)
+      .then(function (body) {
+        console.log("users checking result " + body);
+        res.send(tools.responseFormat(body, "Success", true, 200));
       })
-      .catch(function(err) {
-        console.error(err);
-        res.statusMessage = err;
-        res.status(404).end();
+      .catch(function (err) {
+        console.error("users checking result " + err);
+        res.send(tools.responseFormat(null, err, false, 400));
       });
   } catch (e) {
     //this will eventually be handled by your error handling middleware
     console.error(e);
-    res.status(404).json({
-      message: e
-    });
+    res.send(tools.responseFormat(null, e, false, 400));
   }
 };
 
