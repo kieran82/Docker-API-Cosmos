@@ -31,8 +31,14 @@ const checkroute = async (req, res) => {
 
         let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
         let classData = jsonContent[req.params.name];
-        let class_name = "";
-        class_name = sprintf("%s_%s", DataIn.folder_path, classData.class);
+		let class_name = "";
+		if (!("class_name" in DataIn)) {
+			class_name = sprintf("%s_%s", DataIn.folder_path, classData.class);
+        }
+		else
+		{
+			class_name = DataIn.class_name;
+		}
         console.log("nameobj is " + util.inspect(classData, {
             showHidden: false,
             depth: null
@@ -112,7 +118,14 @@ const getitemroute = async (req, res) => {
 
         let classData = jsonContent[req.params.name];
         DataIn.id = !("id" in DataIn) ? tools.objectTostring(DataIn, classData.keyName) : tools.numberTostring(DataIn.id);
-        let class_name = sprintf("%s_%s", DataIn.folder_path, classData.class);
+		let class_name = "";
+		if (!("class_name" in DataIn)) {
+			class_name = sprintf("%s_%s", DataIn.folder_path, classData.class);
+        }
+		else
+		{
+			class_name = DataIn.class_name;
+		}
         if (checkArray.includes(req.params.name)) {
             const primaryKey = classData.primaryKey;
             const databaseId = classData.database_name;
@@ -194,7 +207,14 @@ const deleteitemroute = async (req, res) => {
         console.log("testing script results: " + DataIn.id);
         let classData = jsonContent[req.params.name];
         DataIn.id = !("id" in DataIn) ? tools.objectTostring(DataIn, classData.keyName) : tools.numberTostring(DataIn.id);
-        let class_name = sprintf("%s_%s", DataIn.folder_path, classData.class);
+        let class_name = "";
+		if (!("class_name" in DataIn)) {
+			class_name = sprintf("%s_%s", DataIn.folder_path, classData.class);
+        }
+		else
+		{
+			class_name = DataIn.class_name;
+		}
         if (checkArray.includes(req.params.name)) {
             const primaryKey = classData.primaryKey;
             const databaseId = classData.database_name;
@@ -275,7 +295,14 @@ const additemroute = async (req, res) => {
             res.status(404).send(tools.responseFormat(null, "name is not found in config file", false, 404));
         }
         let classData = jsonContent[req.params.name];
-        let class_name = sprintf("%s_%s", DataIn.folder_path, classData.class);
+        let class_name = "";
+		if (!("class_name" in DataIn)) {
+			class_name = sprintf("%s_%s", DataIn.folder_path, classData.class);
+        }
+		else
+		{
+			class_name = DataIn.class_name;
+		}
         console.log("class results: " + class_name);
         let id_variable = "";
         if (!("id" in DataIn)) {
@@ -360,7 +387,14 @@ const updateitemroute = async (req, res) => {
         if (jsonContent[req.params.name] === undefined) {
             res.status(404).send(tools.responseFormat(null, "name is not found in config file", false, 404));
         }
-        let classData = jsonContent[req.params.name];
+        let class_name = "";
+		if (!("class_name" in DataIn)) {
+			class_name = sprintf("%s_%s", DataIn.folder_path, classData.class);
+        }
+		else
+		{
+			class_name = DataIn.class_name;
+		}
         let class_name = sprintf("%s_%s", DataIn.folder_path, classData.class);
         console.log("class results: " + class_name);
         let id_variable = "";
@@ -439,7 +473,14 @@ const getHistoryroute = async (req, res) => {
             res.status(404).send(tools.responseFormat(null, "name is not found in config file", false, 404));
         }
         let classData = jsonContent[req.params.name];
-        let class_name = sprintf("%s_%s", DataIn.folder_path, classData.class);
+        let class_name = "";
+		if (!("class_name" in DataIn)) {
+			class_name = sprintf("%s_%s", DataIn.folder_path, classData.class);
+        }
+		else
+		{
+			class_name = DataIn.class_name;
+		}
         let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
         const multi_network = require("../network.js")(configOBJ);
         console.log("" + classData.lower_name + " id results: " + DataIn.id);
@@ -505,7 +546,14 @@ const getRangeroute = async (req, res) => {
     try {
         let DataIn = req.body;
         let classData = jsonContent[req.params.name];
-        let class_name = sprintf("%s_%s", DataIn.folder_path, classData.class);
+        let class_name = "";
+		if (!("class_name" in DataIn)) {
+			class_name = sprintf("%s_%s", DataIn.folder_path, classData.class);
+        }
+		else
+		{
+			class_name = DataIn.class_name;
+		}
         let range_from = DataIn.range_from;
         let range_to = DataIn.range_to;
         if (checkArray.includes(req.params.name)) {
@@ -601,7 +649,14 @@ const getQueryroute = async (req, res) => {
             res.status(404).send(tools.responseFormat(null, "The query string does not exists", false, 404));
         }
 
-        let class_name = sprintf("%s_%s", DataIn.folder_path, classData.class);
+        let class_name = "";
+		if (!("class_name" in DataIn)) {
+			class_name = sprintf("%s_%s", DataIn.folder_path, classData.class);
+        }
+		else
+		{
+			class_name = DataIn.class_name;
+		}
         const primaryKey = classData.primaryKey;
         const databaseId = classData.database_name;
         let containerId = DataIn.folder_path + "" + classData.container_name;
