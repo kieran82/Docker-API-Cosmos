@@ -169,7 +169,7 @@ const getitemroute = async (req, res) => {
             console.log("get " + classData.lower_name + " id " + DataIn.id + " details");
             if (!tools.isEmpty(result)) {
                 console.log("" + classData.lower_name + " " + DataIn.id + ", data: " + result + "");
-                res.send(tools.responseFormat(result, DataIn.id + " " + classData.displayName + " found", true, 200));
+                res.send(tools.responseFormat(JSON.stringify(result), DataIn.id + " " + classData.displayName + " found", true, 200));
             } else {
                 console.log("" + classData.lower_name + " id " + DataIn.id + " does not exists");
                 res.status(404).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " Not found", false, 404));
