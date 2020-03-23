@@ -46,7 +46,7 @@
         "methods": {
             "checkExists": "orderExists",
             "reading": "readOrder",
-            "creating": "createOrder",
+            "creating": "createOrderWithEvent",
             "updating": "updateOrder",
             "get_history": "getHistoryForKey",
             "get_state_by_range": "getStateByRange",
