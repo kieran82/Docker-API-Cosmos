@@ -46,8 +46,10 @@
         "methods": {
             "checkExists": "orderExists",
             "reading": "readOrder",
-            "creating": "createOrderWithEvent",
-            "updating": "updateOrder",
+            "creating": "createAssetWithEvent",
+            "updating": "updateAssetWithEvent",
+            "errigal_creating": "createOrderWithEvent",
+            "errigal_updating": "updateOrderWithEvent",
             "get_history": "getHistoryForKey",
             "get_state_by_range": "getStateByRange",
             "get_query_result": "getQueryResult"

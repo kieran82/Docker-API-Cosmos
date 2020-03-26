@@ -1,5 +1,6 @@
 const fs = require('fs');
 const sprintf = require('sprintf-js').sprintf;
+const StringBuilder = require("node-stringbuilder");
 
 module.exports = {
 	configFile: function (parentpath, name, localblockchain = false) {
@@ -24,6 +25,38 @@ module.exports = {
 		let ccp = JSON.parse(fs.readFileSync(connection_file, 'utf8'));
 		obj.ccp = ccp;
 		return obj;
+	},
+	bufferToString: function (data) {
+		const js = JSON.parse(data);
+        let sb = new StringBuilder();
+        js.data.toString().split(",").forEach(s => sb.append(String.fromCharCode(parseInt(s, 10))));
+        let str = sb.toString();
+
+		return str;
+	},
+	stringToJson: function (str) {
+		let stringVal = str;
+		let matches = stringVal.match(/\[.*?\]/g);
+		stringVal = stringVal.replace(/ *\[[^\]]*]/, "");
+		let arr = [];
+		if (matches.length > 0) {
+			matches.forEach(function (element) {
+				arr = arr.concat(JSON.parse(element));
+			});
+		}
+
+		if (stringVal.length > 0) {
+			let jsonmatches = stringVal.match(/\{.*?\}/g);
+			if (jsonmatches.length > 0) {
+				jsonmatches.forEach(function (element) {
+					if (tools.IsJsonString(element)) {
+						arr = arr.concat(JSON.parse(element));
+					}
+				});
+			}
+		}
+
+		return arr;
 	},
 	objectTostring: function (obj, key) {
 		let str = obj[key];
