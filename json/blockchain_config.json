@@ -44,12 +44,12 @@
         "database_name": "orderDatabase",
         "container_name": "Orders",
         "methods": {
-            "checkExists": "orderExists",
-            "reading": "readOrder",
-            "creating": "createAssetWithEvent",
-            "updating": "updateAssetWithEvent",
-            "errigal_creating": "createOrderWithEvent",
-            "errigal_updating": "updateOrderWithEvent",
+            "checkExists": "assetExists",
+            "reading": "readAsset",
+            "creating": "createAsset",
+            "updating": "updateAsset",
+            "errigal_creating": "createOrder",
+            "errigal_updating": "updateOrder",
             "get_history": "getHistoryForKey",
             "get_state_by_range": "getStateByRange",
             "get_query_result": "getQueryResult"

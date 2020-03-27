@@ -24,14 +24,15 @@ const checkroute = async (req, res) => {
 
         let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
         let classData = jsonContent[req.params.name];
-        let class_name = DataIn.folder_path;
+        let contract_name = DataIn.contract_name;
+        
         console.log("nameobj is " + util.inspect(classData, {
             showHidden: false,
             depth: null
         }));
         DataIn.id = !("id" in DataIn) ? tools.objectTostring(DataIn, classData.keyName) : tools.numberTostring(DataIn.id);
         const multi_network = require("../network.js")(configOBJ);
-        const result = await multi_network.keyExists(class_name, classData.methods.checkExists, DataIn.id);
+        const result = await multi_network.keyExists(contract_name, classData.methods.checkExists, DataIn.id);
         console.log("testing return results: " + result);
         console.log("check " + classData.lower_name + " id " + DataIn.id + " exists");
         if (tools.checkBool(result)) {
@@ -65,10 +66,10 @@ const getitemroute = async (req, res) => {
 
         let classData = jsonContent[req.params.name];
         DataIn.id = !("id" in DataIn) ? tools.objectTostring(DataIn, classData.keyName) : tools.numberTostring(DataIn.id);
-        let class_name = DataIn.folder_path;
+        let contract_name = DataIn.contract_name;
         let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
         const multi_network = require(current_path_location + "network.js")(configOBJ);
-        const result = await multi_network.readKeyValue(class_name, classData.methods.reading, DataIn.id);
+        const result = await multi_network.readKeyValue(contract_name, classData.methods.reading, DataIn.id);
         console.log("testing return results: " + result);
         console.log("get " + classData.lower_name + " id " + DataIn.id + " details");
         if (! tools.isEmpty(result)) {
@@ -100,11 +101,11 @@ const deleteitemroute = async (req, res) => {
         console.log("testing script results: " + DataIn.id);
         let classData = jsonContent[req.params.name];
         DataIn.id = !("id" in DataIn) ? tools.objectTostring(DataIn, classData.keyName) : tools.numberTostring(DataIn.id);
-        let class_name = DataIn.folder_path;
+        let contract_name = DataIn.contract_name;
 
         let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
         const multi_network = require(current_path_location + "network.js")(configOBJ);
-        const result = await multi_network.deleteKeyValue(class_name, classData.methods.reading, DataIn.id);
+        const result = await multi_network.deleteKeyValue(contract_name, classData.methods.reading, DataIn.id);
         console.log("testing return results: " + result);
         console.log("deleting " + classData.lower_name + " id " + DataIn.id + " details");
         if (tools.checkBool(result)) {
@@ -131,8 +132,8 @@ const additemroute = async (req, res) => {
             res.status(404).send(tools.responseFormat(null, "name is not found in config file", false, 404));
         }
         let classData = jsonContent[req.params.name];
-        let class_name = DataIn.folder_path;
-        console.log("class results: " + class_name);
+        let contract_name = DataIn.contract_name;
+        console.log("class results: " + contract_name);
         let id_variable = "";
         if (!("id" in DataIn)) {
             id_variable = DataIn[classData.keyName];
@@ -141,28 +142,25 @@ const additemroute = async (req, res) => {
         } DataIn.id = id_variable;
         let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
         const multi_network = require("../network.js")(configOBJ);
-        let fname = DataIn.folder_path;
+        let fname = contract_name;
         delete DataIn.folder_path;
+        delete DataIn.contract_name;
         let keychk = tools.objectTostring(DataIn, classData.keyName);
         console.log("" + classData.lower_name + " id results: " + keychk);
         console.log("received results: " + JSON.stringify(DataIn));
         console.log("adding " + classData.lower_name + " id " + keychk + " with following data " + JSON.stringify(DataIn) + "");
         let methodName = fname == "errigal" ? classData.methods.errigal_creating : classData.methods.creating;
-        const result = await multi_network.runKeyValueWithEvent(class_name, methodName, keychk, JSON.stringify(DataIn));
+        const result = await multi_network.createKeyValue(contract_name, methodName, keychk, JSON.stringify(DataIn));
         console.log("get results: " + result);
         if (tools.checkBool(result)) {
-            res.send(tools.responseFormat(result, DataIn.id + " " + classData.displayName + " was added", true, 200));
             console.log("" + classData.displayName + " " + keychk + " was added");
-            console.log("testing return results: " + result);
-            console.log("get " + classData.lower_name + " id " + DataIn.id + " details");
-            if (! tools.isEmpty(result)) {
-                console.log("" + classData.lower_name + " " + DataIn.id + ", data: " + result + "");
-                let orders = JSON.parse(result);
-                console.log(JSON.stringify(orders));
-                res.send(tools.responseFormat(orders, DataIn.id + " " + classData.displayName + " found", true, 200));
+            const hresult = await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id);
+            console.log("testing return results: " + hresult);
+            console.log("get history " + classData.lower_name + " id " + DataIn.id + " history");
+            if (! tools.isEmpty(hresult)) {
+                res.send(tools.responseFormat(tools.bufferToString(hresult), DataIn.id + " " + classData.displayName + " was added", true, 200));
             } else {
-                console.log("" + classData.lower_name + " id " + DataIn.id + " does not exists");
-                res.status(404).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " Not found", false, 404));
+                res.send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " was added", true, 200));
             }
         } else {
             console.error(result);
@@ -184,8 +182,8 @@ const updateitemroute = async (req, res) => {
             res.status(404).send(tools.responseFormat(null, "name is not found in config file", false, 404));
         }
         let classData = jsonContent[req.params.name];
-        let class_name = DataIn.folder_path;
-        console.log("class results: " + class_name);
+        let contract_name = DataIn.contract_name;
+        console.log("class results: " + contract_name);
         let id_variable = "";
         if (!("id" in DataIn)) {
             id_variable = DataIn[classData.keyName];
@@ -195,17 +193,25 @@ const updateitemroute = async (req, res) => {
         let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
         const multi_network = require("../network.js")(configOBJ);
         let keychk = tools.objectTostring(DataIn, classData.keyName);
-        let fname = DataIn.folder_path;
+        let fname = contract_name;
         delete DataIn.folder_path;
+        delete DataIn.contract_name;
         console.log("" + classData.lower_name + " id results: " + keychk);
         console.log("received results: " + JSON.stringify(DataIn));
         console.log("updating " + classData.lower_name + " id " + keychk + " with following data " + JSON.stringify(DataIn) + "");
         let methodName = fname == "errigal" ? classData.methods.errigal_updating : classData.methods.updating;
-        const result = await multi_network.runKeyValueWithEvent(class_name, methodName, keychk, JSON.stringify(DataIn));
+        const result = await multi_network.updateKeyValue(contract_name, methodName, keychk, JSON.stringify(DataIn));
         console.log("get results: " + result);
         if (tools.checkBool(result)) {
-            res.send(tools.responseFormat(result, DataIn.id + " " + classData.displayName + " was updated", true, 200));
             console.log("" + classData.displayName + " " + keychk + " was updated");
+            const hresult = await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id);
+            console.log("testing return results: " + hresult);
+            console.log("get history " + classData.lower_name + " id " + DataIn.id + " history");
+            if (! tools.isEmpty(hresult)) {
+                res.send(tools.responseFormat(tools.bufferToString(hresult), DataIn.id + " " + classData.displayName + " was updated", true, 200));
+            } else {
+                res.send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " was updated", true, 200));
+            }           
         } else {
             console.error(result);
             res.status(404).send(tools.responseFormat(null, classData.displayName + " was not updated", false, 404));
@@ -226,12 +232,12 @@ const getHistoryroute = async (req, res) => {
             res.status(404).send(tools.responseFormat(null, "name is not found in config file", false, 404));
         }
         let classData = jsonContent[req.params.name];
-        let class_name = DataIn.folder_path;
+        let contract_name = DataIn.contract_name;
         let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
         const multi_network = require("../network.js")(configOBJ);
         console.log("" + classData.lower_name + " id results: " + DataIn.id);
         console.log("getting " + classData.lower_name + " history " + DataIn.id + "");
-        const result = await multi_network.getHistoryForKey(class_name, classData.methods.get_history, DataIn.id);
+        const result = await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id);
         console.log("testing return results: " + result);
         console.log("get " + classData.lower_name + " id " + DataIn.id + " history");
         console.log("testing script results: " + result);
@@ -268,14 +274,14 @@ const getRangeroute = async (req, res) => {
     try {
         let DataIn = req.body;
         let classData = jsonContent[req.params.name];
-        let class_name = DataIn.folder_path;
+        let contract_name = DataIn.contract_name;
         let range_from = DataIn.range_from;
         let range_to = DataIn.range_to;
         let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
         const multi_network = require("../network.js")(configOBJ);
         console.log("" + classData.displayName + " id : " + DataIn.id);
         console.log("check " + classData.displayName + " for a range of ids from " + range_from + " to " + range_to + "");
-        const result = await multi_network.getStateByRange(class_name, classData.methods.get_state_by_range, range_from, range_to);
+        const result = await multi_network.getStateByRange(contract_name, classData.methods.get_state_by_range, range_from, range_to);
         console.log("testing script results: " + result);
         if (tools.isEmpty(result)) {
             console.error("" + classData.displayName + "  range from " + range_from + " to " + range_to + " does not exists");
@@ -308,12 +314,12 @@ const getQueryroute = async (req, res) => {
             res.status(404).send(tools.responseFormat(null, "The query string does not exists", false, 404));
         }
 
-        let class_name = DataIn.folder_path;
+        let contract_name = DataIn.contract_name;
         let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
         const multi_network = require("../network.js")(configOBJ);
         console.log("check " + classData.displayName + "  with queryString with query:" + DataIn.query_string + "");
         console.log("" + classData.displayName + " query results: " + DataIn.query_string);
-        const result = await multi_network.getQueryResult(class_name, classData.methods.get_query_result, DataIn.query_string);
+        const result = await multi_network.getQueryResult(contract_name, classData.methods.get_query_result, DataIn.query_string);
         console.log("received results: " + result);
         if (tools.isEmpty(result)) {
             console.error("" + classData.displayName + "  query result empty");
