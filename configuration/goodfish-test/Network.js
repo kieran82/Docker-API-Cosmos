@@ -142,7 +142,7 @@ exports.readKeyValue = async (contractName, func, keyID) => {
     const contract = network.getContract(contractName);
 
     // Submit the specified transaction.
-    const result = await contract.evaluateTransaction(func, keyID);
+    const result = await contract.submitTransaction(func, keyID);
     // console.log(`Transaction has been submitted:\n ${result}`);
 
     // Disconnect from the gateway.
@@ -324,39 +324,6 @@ exports.saveArrayOneAtATime = async (contractName, func, newBatchFeed) => {
 
     // Submit the specified transaction.
     // await contract.submitTransaction(func, strArray);
-
-    // Disconnect from the gateway.
-    await gateway.disconnect();
-  } catch (error) {
-    console.error(`Failed to submit transaction: ${error}`);
-  }
-};
-
-exports.deleteKeyValue = async (contractName, func, keyID) => {
-  try {
-    const wallet = getWallet();
-    const exists = await wallet.exists(userName);
-
-    if (!exists) {
-      console.log(
-        `An identity for the user ${userName} does not exist in the wallet`
-      );
-      return;
-    }
-
-    // Get the contract from the network.
-    const gateway = new Gateway();
-    await gateway.connect(ccp, {
-      wallet,
-      identity: userName,
-      discovery: gatewayDiscovery,
-    });
-    const network = await gateway.getNetwork(theChannel);
-    const contract = network.getContract(contractName);
-
-    // Submit the specified transaction.
-    await contract.submitTransaction(func, keyID);
-    console.log(`Item key ${keyID} has been deleted`);
 
     // Disconnect from the gateway.
     await gateway.disconnect();

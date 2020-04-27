@@ -4,7 +4,7 @@
 // const path = require("path");
 const StringBuilder = require('node-stringbuilder');
 const sb = new StringBuilder();
-const theContract = 'goodfish-production-orders';
+const theContract = 'morgan-production-orders';
 const network = require('./Network');
 
 const createBatchObject = (id) => {
@@ -341,8 +341,8 @@ const addNewAsset = async (newAsset) => {
 };
 
 let newAsset = createOrderObject('7F3DC60F-E16F-412E-AF1F-519775935E80');
-network.keyExists(theContract, 'assetExists', newAsset.id);
-// deleteAsset(newAsset);
+// network.keyExists(theContract, 'assetExists', newAsset.id);
+deleteAsset(newAsset);
 // readNewAsset(newAsset);
 // addNewAsset(newAsset);
 // updateNewAsset(newAsset);

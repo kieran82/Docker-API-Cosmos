@@ -7,10 +7,10 @@ const {
 } = require('fabric-network');
 const fs = require('fs');
 const path = require('path');
-// const StringBuilder = require('node-stringbuilder');
-// const sb = new StringBuilder();
+const StringBuilder = require('node-stringbuilder');
+const sb = new StringBuilder();
 const theContract = 'gunpoint-orders';
-// const network = require('./Network');
+const network = require('./Network');
 const utility = require('./classes/utility');
 
 // capture network variables from config.json
@@ -27,7 +27,7 @@ const batchSize = Number(config.batchSize);
 
 const events = require('events');
 const eventEmitter = new events.EventEmitter();
-const theBlockchainEvent = 'orderAddEvent'; //orderReadEvent orderEvent  orderAddEvent
+const theBlockchainEvent = 'orderReadEvent'; //orderReadEvent orderEvent  orderAddEvent
 
 console.log(`The wallet folder is ${theWallet} and ${userName}`);
 
@@ -45,7 +45,7 @@ eventEmitter.on('blockEvent', id => {
   console.log(id);
   // console.log(`This is ccp ${ccp.toString()}`);
 
-  // utility.getBlockTxId(id, theContract, 'getHistoryForKey');
+  utility.getBlockTxId(id, theContract, 'getHistoryForKey');
 });
 
 // Common method to get a Wallet
@@ -55,7 +55,6 @@ const getWallet = () => {
   console.log(`Wallet path: ${walletPath}`);
   return wallet;
 };
-
 const listenerAdd = async event => {
   try {
     const wallet = getWallet();
@@ -158,8 +157,8 @@ const main = async () => {
   const orderAddEvent = 'orderAddEvent';
   const orderUpdateEvent = 'orderUpdateEvent';
 
-  await listener1(orderAddEvent);
-  await listener2(orderUpdateEvent);
+  await listenerAdd(orderAddEvent);
+  await listenerUpdate(orderUpdateEvent);
 };
 
 main();

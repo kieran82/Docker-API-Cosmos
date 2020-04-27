@@ -4,7 +4,7 @@
 // const path = require("path");
 const StringBuilder = require('node-stringbuilder');
 const sb = new StringBuilder();
-const theContract = 'goodfish-production-orders';
+const theContract = 'goodfish';
 const network = require('./Network');
 
 const createBatchObject = (id) => {
@@ -73,7 +73,7 @@ const createOrderObject = (id) => {
     id: '7F3DC60F-E16F-412E-AF1F-519775935E80',
     orderId: '7F3DC60F-E16F-412E-AF1F-519775935E80',
     docType: 'foodOrder',
-    clientName: 'Morgan',
+    clientName: 'Good',
     orderNumber: 'PF230320',
     dateTimeReceived: 1584964353,
     dateReceived: 1584921600,
@@ -83,7 +83,7 @@ const createOrderObject = (id) => {
     despatched_date: null,
     buyerId: null,
     buyerName: 'Pallas Foods',
-    quantity: 700,
+    quantity: 666,
     qtyUnitMeasurement: 'KG',
     tested: 'no',
     dateTested: 1584964353,
@@ -180,7 +180,7 @@ const readNewAsset = async (newAsset) => {
 
   let asset = await network.readKeyValue(
     theContract,
-    'readTheAsset',
+    'readTheAssetWithEvent',
     newAsset.id
   );
 
@@ -189,20 +189,12 @@ const readNewAsset = async (newAsset) => {
   // console.log(asset.tx_id);
 };
 
-const deleteAsset = async (newAsset) => {
-  console.log(newAsset.id);
-
-  await network.deleteKeyValue(theContract, 'deleteAsset', newAsset.id);
-
-  // console.log(asset.tx_id);
-};
-
 const updateNewAsset = async (newAsset) => {
   console.log(newAsset.id);
 
   let asset = await network.updateKeyValue(
     theContract,
-    'updateAsset',
+    'updateAssetWithEvent',
     newAsset.id,
     JSON.stringify(newAsset)
   );
@@ -226,7 +218,7 @@ const createBatchfeedBatch = (firstBatchId, lastBatchId) => {
   for (let i = firstBatchId; i <= lastBatchId; i++) {
     let obj = {};
     const id = 'MS' + i.toString();
-    obj = createOrderObject(id);
+    obj = createAssetObject(id);
     // obj = createBatchfeedObject(i, client);
     batchArray.push(obj);
     // console.log(JSON.stringify(obj));
@@ -251,7 +243,7 @@ const saveBatchfeedBatch = async (firstBatchId, lastBatchId, inIncrements) => {
   console.log(`batchArray length is ${batchArray.length}`);
 
   if (inIncrements === true) {
-    await network.saveArrayOneAtATime(theContract, 'createAsset', batchArray);
+    await network.saveArrayOneAtATime(theContract, 'createasset', batchArray);
   } else {
     await network.saveArrayInSegments(theContract, 'saveArray', batchArray);
   }
@@ -331,7 +323,7 @@ const getHistory = async (id) => {
 const addNewAsset = async (newAsset) => {
   await network.createKeyValue(
     theContract,
-    'createAsset',
+    'createAssetWithEvent',
     newAsset.id,
     JSON.stringify(newAsset)
   );
@@ -340,14 +332,13 @@ const addNewAsset = async (newAsset) => {
   console.log(JSON.stringify(order));
 };
 
-let newAsset = createOrderObject('7F3DC60F-E16F-412E-AF1F-519775935E80');
-network.keyExists(theContract, 'assetExists', newAsset.id);
-// deleteAsset(newAsset);
+let newAsset = createOrderObject('7F3DC60F-E16F-412E-AF1F-519775935E81');
+// network.keyExists(theContract, 'assetExists', newAsset.id);
 // readNewAsset(newAsset);
 // addNewAsset(newAsset);
 // updateNewAsset(newAsset);
 // testy();
-// testyOne(newAsset.id);
+testyOne(newAsset.id);
 // MS100004  MS100010
 
 // saveBatchfeedBatch(100003, 100020, false);

@@ -1,298 +1,210 @@
-"use strict";
+'use strict';
 
 // const fs = require("fs");
 // const path = require("path");
-const StringBuilder = require("node-stringbuilder");
+const StringBuilder = require('node-stringbuilder');
 const sb = new StringBuilder();
-const theContract = "errigal";
-const network = require("./Network");
+const theContract = 'gunpoint-orders';
+const network = require('./Network');
 
-const createOrderObject = orderId => {
-    // console.log(`Order ID is ${orderId}`);
-    let orderTemplate = {
-        errigalOrderId: "2001",
-        docType: "foodOrder",
-        despatchDate: "2020-02-20",
-        dateReceived: "2020-03-20",
-        buyerId: "0001",
-        quantity: 150,
-        qtyUnitMeasurement: "Kg",
-        processUsed: "Smoking",
-        orderLines: [
-            {
-                orderLine: 1,
-                sourceBatchId: "101",
-                tested: "Yes",
-                quantity: 100,
-                qtyUnitMeasurement: "Kg"
-            },
-            {
-                orderLine: 2,
-                sourceBatchId: "102",
-                tested: "Yes",
-                quantity: 50,
-                qtyUnitMeasurement: "Kg"
-            }
-        ]
-    };
+const createBatchObject = id => {
+  // console.log(`asset ID is ${assetId}`);
+  let assetTemplate = {
+    id: '09568657-8EA3-4D69-BA49-618277201920',
+    batchId: '09568657-8EA3-4D69-BA49-618277201920',
+    docType: 'batchOrder',
+    batchNumber: 'PFB230320',
+    orderId: '7F3DC60F-E16F-412E-AF1F-619775935E89',
+    speciesId: 6,
+    ProductSpeciesName: 'Hake',
+    dateTimeReceived: 1584965510,
+    dateReceived: 1584921600,
+    dateOnlyReceived: '2020-03-23',
+    timeReceived: '12:11:56',
+    received_date_time: '2020-03-23 12:11:50',
+    ProductSpeciesName: 'Hake Fillets',
+    ProductSpeciesCode: 'F001HF',
+    ProductSpeciesEAN: '0000',
+    qtyUnitMeasurement: 'KG',
+    quantity: 580,
+    quantity_kg: 580,
+    quantity_unit: 0,
+    packageIncluded: 'no',
+    batchClosed: 'no',
+    intakeLines: [
+      {
+        intakeLine: 1,
+        sourceBatchId: 'EB6519D9-5F68-4E5D-9FE6-7F20F23D2601',
+        quantity: 300,
+        quantity_kg: 300,
+        quantity_unit: 0,
+        qtyUnitMeasurement: 'KG'
+      },
+      {
+        intakeLine: 2,
+        sourceBatchId: '785632F7-2502-4821-82A5-99C5C4BC1F14',
+        quantity: 250,
+        quantity_kg: 250,
+        quantity_unit: 0,
+        qtyUnitMeasurement: 'KG'
+      },
+      {
+        intakeLine: 3,
+        sourceBatchId: '74437F44-3F99-4B96-933F-2B6CDAECD3A1',
+        quantity: 30,
+        quantity_kg: 30,
+        quantity_unit: 0,
+        qtyUnitMeasurement: 'KG'
+      }
+    ]
+  };
 
-    let order = {};
-    order = orderTemplate;
-    order.errigalOrderId = orderId;
-    order.quantity = 150;
-    // console.log(`Order ID is ${order.orderId}`);
-    return order;
+  let asset = {};
+  asset = assetTemplate;
+  asset.id = id;
+  asset.quantity_kg = 324;
+  // console.log(`asset ID is ${asset.assetId}`);
+  return asset;
 };
 
-const createSdlmOrderObject = orderId => {
-    // console.log(`Order ID is ${orderId}`);
-    const orderTemplate = {
-        sdlmOrderId: "2001",
-        docType: "foodOrder",
-        despatchDate: "2020-02-20",
-        dateReceived: "2020-02-20",
-        buyerId: "1001",
-        quantity: 650,
-        qtyUnitMeasurement: "Kg",
-        processUsed: "Smoking",
-        orderLines: [
-            {
-                orderLine: 1,
-                sourceBatchId: "103",
-                tested: "Yes",
-                quantity: 500,
-                qtyUnitMeasurement: "Kg"
-            },
-            {
-                orderLine: 2,
-                sourceBatchId: "104",
-                tested: "Yes",
-                quantity: 150,
-                qtyUnitMeasurement: "Kg"
-            }
-        ]
-    };
+const createOrderObject = id => {
+  // console.log(`asset ID is ${assetId}`);
+  let assetTemplate = {
+    id: '7F3DC60F-E16F-412E-AF1F-519775935E80',
+    orderId: '7F3DC60F-E16F-412E-AF1F-519775935E80',
+    docType: 'foodOrder',
+    clientName: 'Baddy',
+    orderNumber: 'PF230320',
+    dateTimeReceived: 1584964353,
+    dateReceived: 1584921600,
+    timeReceived: '11:52:33',
+    despatchDate: 1584964353,
+    received_date_time: '2020-03-23 11:52:33',
+    despatched_date: null,
+    buyerId: null,
+    buyerName: 'Pallas Foods',
+    quantity: 666,
+    qtyUnitMeasurement: 'KG',
+    tested: 'no',
+    dateTested: 1584964353,
+    test_date: null,
+    closed: 'no',
+    orderLines: [
+      {
+        sourceBatchId: '09568657-8EA3-5D69-BA49-618277201920',
+        quantity: 600,
+        qtyUnitMeasurement: 'KG',
+        date_created: '2020-03-23 12:11:50'
+      }
+    ]
+  };
 
-    let order = {};
-    order = orderTemplate;
-    order.sdlmOrderId = orderId;
-    order.quantity = 650;
-    // console.log(`Order ID is ${order.orderId}`);
-    return order;
-};
-
-const createVfOrderObject = orderId => {
-    // console.log(`Order ID is ${orderId}`);
-    const orderTemplate = {
-        company: "GLN of Errigal",
-        exportNo: "200001",
-        deliveryNo: "30001",
-        orderNo: "MS100001",
-        despatchDate: "2019-12-25",
-        deliveryDate: "2019-12-26",
-        warehouse: {
-            gln: null,
-            code: "01",
-            name: "Errigal Bay - Kilmore",
-            address: "Kilmore Quay",
-            town: null,
-            zip: null,
-            county: "Co Wexford",
-            country: "Ireland"
-        },
-        customer: {
-            gln: null,
-            code: "L01",
-            name: "Lidl",
-            adddress: "Rotelstr. 30",
-            town: "Neckarsulm",
-            zip: "74166",
-            county: null,
-            country: "Germany"
-        },
-        address: {
-            gln: null,
-            code: "L01a",
-            name: "Lidl Distributionszentrum",
-            adddress: "Lange Str. 28",
-            town: "Berlin",
-            zip: "10115",
-            county: null,
-            country: "Germany"
-        },
-        transport: {
-            gln: null,
-            code: "DHL",
-            description: "DHL Express"
-        },
-        lines: [
-            {
-                lineId: 10001,
-                productBarcode: "802270011054",
-                caseBarcode: "8022700130515",
-                commodityCode: "03062400",
-                customerProductCode: "C001",
-                species: "CRE",
-                weight: 500,
-                isFrozen: false,
-                intakes: [
-                    {
-                        intakeNo: "21665",
-                        intakeDate: "2019-11-12",
-                        supplier: {
-                            gln: null,
-                            code: "F01",
-                            name: "Fisher & Sons Fisheries",
-                            adddress: "The Pier",
-                            town: "Killala",
-                            zip: null,
-                            county: "Co Mayo",
-                            country: "Ireland"
-                        },
-                        catchDate: "2019-11-12",
-                        landingDate: "2019-11-13",
-                        vessels: ["IRL000I10321", "IRL000I10322"],
-                        ports: ["IESCH"],
-                        areas: ["27.7"],
-                        fishingGears: ["08"],
-                        farms: ["IE 500 EC"],
-                        countries: ["IRL"]
-                    },
-                    {
-                        intakeNo: "21677",
-                        intakeDate: "2019-12-12",
-                        supplier: {
-                            gln: null,
-                            code: "F01",
-                            name: "Fisher & Sons Fisheries",
-                            adddress: "The Pier",
-                            town: "Killala",
-                            zip: null,
-                            county: "Co Mayo",
-                            country: "Ireland"
-                        },
-                        catchDate: "2019-12-12",
-                        landingDate: "2019-12-13",
-                        vessels: ["IRL000I10311", "IRL000I10332"],
-                        ports: ["IESCH"],
-                        areas: ["27.7"],
-                        fishingGears: ["08"],
-                        farms: ["IE 500 EC"],
-                        countries: ["IRL"]
-                    }
-                ]
-            }
-        ]
-    };
-
-    let order = {};
-    order = orderTemplate;
-    order.orderNo = orderId;
-    // console.log(`Order ID is ${order.orderId}`);
-    return order;
+  let asset = {};
+  asset = assetTemplate;
+  asset.id = id;
+  asset.quantity = 678;
+  // console.log(`asset ID is ${asset.assetId}`);
+  return asset;
 };
 
 const testy = async () => {
-    const res = await network.getHistoryForKey(
-        theContract,
-        "getHistoryForKey",
-        "MS100025"
-    );
+  const res = await network.getHistoryForKey(
+    theContract,
+    'getHistoryForKey',
+    'EB6519D9-5F68-4E5D-9FE6-7F20F23D2601'
+  );
 
-    let allResults = "";
-    const js = JSON.parse(res);
-    //Convert the array of ASCII values into a character string
-    js.data
-        .toString()
-        .split(",")
-        .forEach(s => sb.append(String.fromCharCode(parseInt(s, 10))));
-    //Parse the string back into a JSON object
-    const myJson = JSON.parse(sb.toString());
+  let allResults = '';
+  const js = JSON.parse(res);
+  //Convert the array of ASCII values into a character string
+  js.data
+    .toString()
+    .split(',')
+    .forEach(s => sb.append(String.fromCharCode(parseInt(s, 10))));
+  //Parse the string back into a JSON object
+  const myJson = JSON.parse(sb.toString());
+  console.log(
+    '--------------------------------------------------------------------'
+  );
+
+  //Now all items in the history object array can be accessed
+  for (var myKey in myJson) {
+    console.log(myJson[myKey].TxId);
+    const dt = new Date(parseInt(myJson[myKey].Timestamp.seconds.low) * 1000);
+    // console.log(myJson[myKey].Timestamp.seconds.low);
+    console.log(dt.toISOString());
+
     console.log(
-        "--------------------------------------------------------------------"
+      '--------------------------------------------------------------------'
     );
-
-    //Now all items in the history object array can be accessed
-    for (var myKey in myJson) {
-        console.log(myJson[myKey].TxId);
-        const dt = new Date(
-            parseInt(myJson[myKey].Timestamp.seconds.low) * 1000
-        );
-        // console.log(myJson[myKey].Timestamp.seconds.low);
-        console.log(dt.toISOString());
-
-        console.log(
-            "--------------------------------------------------------------------"
-        );
-    }
+  }
 };
 
-const testyOne = async newOrder => {
-    const res = await network.getHistoryForKey(
-        theContract,
-        "getHistoryForKey",
-        newOrder
-    );
+const testyOne = async newasset => {
+  const res = await network.getHistoryForKey(
+    theContract,
+    'getHistoryForKey',
+    newasset
+  );
 
-    let allResults = "";
-    const js = JSON.parse(res);
-    //Convert the array of ASCII values into a character string
-    js.data
-        .toString()
-        .split(",")
-        .forEach(s => sb.append(String.fromCharCode(parseInt(s, 10))));
-    //Parse the string back into a JSON object
-    const myJson = JSON.parse(sb.toString());
+  let allResults = '';
+  const js = JSON.parse(res);
+  //Convert the array of ASCII values into a character string
+  js.data
+    .toString()
+    .split(',')
+    .forEach(s => sb.append(String.fromCharCode(parseInt(s, 10))));
+  //Parse the string back into a JSON object
+  const myJson = JSON.parse(sb.toString());
+  console.log(
+    '--------------------------------------------------------------------'
+  );
+
+  //Now all items in the history object array can be accessed
+  for (var myKey in myJson) {
+    console.log(myJson[myKey].TxId);
+    const dt = new Date(parseInt(myJson[myKey].Timestamp.seconds.low) * 1000);
+    // console.log(myJson[myKey].Timestamp.seconds.low);
+    console.log(dt.toISOString());
+
     console.log(
-        "--------------------------------------------------------------------"
+      '--------------------------------------------------------------------'
     );
-
-    //Now all items in the history object array can be accessed
-    for (var myKey in myJson) {
-        console.log(myJson[myKey].TxId);
-        const dt = new Date(
-            parseInt(myJson[myKey].Timestamp.seconds.low) * 1000
-        );
-        // console.log(myJson[myKey].Timestamp.seconds.low);
-        console.log(dt.toISOString());
-
-        console.log(
-            "--------------------------------------------------------------------"
-        );
-    }
+  }
 };
 
-let newOrder = createVfOrderObject("MS100020");
-// // console.log(newOrder);
+// // console.log(newasset);
 
-const readNewOrder = async newOrder => {
-    console.log(newOrder.orderNo);
+const readNewAsset = async newAsset => {
+  console.log(newAsset.id);
 
-    let order = await network.readKeyValue(
-        theContract,
-        "readOrder",
-        newOrder.orderNo
-    );
+  let asset = await network.readKeyValue(
+    theContract,
+    'readTheAsset',
+    newAsset.id
+  );
 
-    // order = JSON.parse(order);
-    console.log(order.toString());
-    // console.log(order.tx_id);
+  asset = JSON.parse(asset);
+  console.log(asset.id);
+  // console.log(asset.tx_id);
 };
 
-const updateNewOrder = async newOrder => {
-    console.log(newOrder.orderNo);
+const updateNewAsset = async newAsset => {
+  console.log(newAsset.id);
 
-    let order = await network.updateKeyValue(
-        theContract,
-        "updateOrder",
-        newOrder.orderNo,
-        JSON.stringify(newOrder)
-    );
+  let asset = await network.updateKeyValue(
+    theContract,
+    'updateAssetWithEvent',
+    newAsset.id,
+    JSON.stringify(newAsset)
+  );
 
-    // order = JSON.parse(order);
-    // console.log(order.toString());
-    // console.log(order.tx_id);
-    await testyOne(newOrder.orderNo);
+  // asset = JSON.parse(asset);
+  // console.log(asset.toString());
+  // console.log(asset.tx_id);
+  // await testyOne(newAsset.id);
+  // const order = await getHistory(newAsset.id);
+  console.log(JSON.stringify(order));
 };
 
 /**
@@ -301,22 +213,22 @@ const updateNewOrder = async newOrder => {
  * @param {*} lastBatchId
  */
 const createBatchfeedBatch = (firstBatchId, lastBatchId) => {
-    let batchArray = [];
+  let batchArray = [];
 
-    for (let i = firstBatchId; i <= lastBatchId; i++) {
-        let obj = {};
-        const orderNo = "MS" + i.toString();
-        obj = createVfOrderObject(orderNo);
-        // obj = createBatchfeedObject(i, client);
-        batchArray.push(obj);
-        // console.log(JSON.stringify(obj));
-    }
+  for (let i = firstBatchId; i <= lastBatchId; i++) {
+    let obj = {};
+    const id = 'MS' + i.toString();
+    obj = createAssetObject(id);
+    // obj = createBatchfeedObject(i, client);
+    batchArray.push(obj);
+    // console.log(JSON.stringify(obj));
+  }
 
-    for (let i = 0; i < batchArray.length; i++) {
-        console.log(`${batchArray[i].orderNo} `);
-    }
+  for (let i = 0; i < batchArray.length; i++) {
+    console.log(`${batchArray[i].id} `);
+  }
 
-    return batchArray;
+  return batchArray;
 };
 /**
  * Create and save a batch of batchfeeds identified by the range of numbers given
@@ -324,71 +236,109 @@ const createBatchfeedBatch = (firstBatchId, lastBatchId) => {
  * @param {the last number in the BatchId range} lastBatchId
  */
 const saveBatchfeedBatch = async (firstBatchId, lastBatchId, inIncrements) => {
-    let counter = 0;
-    //saveArray
-    let batchArray = [];
-    batchArray = createBatchfeedBatch(firstBatchId, lastBatchId);
-    console.log(`batchArray length is ${batchArray.length}`);
+  let counter = 0;
+  //saveArray
+  let batchArray = [];
+  batchArray = createBatchfeedBatch(firstBatchId, lastBatchId);
+  console.log(`batchArray length is ${batchArray.length}`);
 
-    if (inIncrements === true) {
-        await network.saveArrayOneAtATime(
-            theContract,
-            "createOrder",
-            batchArray
-        );
-    } else {
-        await network.saveArrayInSegments(theContract, "saveArray", batchArray);
-    }
+  if (inIncrements === true) {
+    await network.saveArrayOneAtATime(theContract, 'createasset', batchArray);
+  } else {
+    await network.saveArrayInSegments(theContract, 'saveArray', batchArray);
+  }
 };
 
 const saveArray = async (contract, func, array) => {
-    // console.log(contract);
-    array.forEach(s => {
-        s.Comment = s.Comment + " --- other comment";
-    });
+  // console.log(contract);
+  array.forEach(s => {
+    s.Comment = s.Comment + ' --- other comment';
+  });
 
-    // let strArray = JSON.stringify(array);
+  // let strArray = JSON.stringify(array);
 
-    await network.saveArrayInSegments(contract, func, array); //
+  await network.saveArrayInSegments(contract, func, array); //
 };
 
-// const read = async order => {
-//     order = await network.readKeyValue(theContract, "readVfOrder", order);
-//     order = JSON.parse(order);
-//     console.log(`This is the order number ${order.orderNo}`);
+// const read = async asset => {
+//     asset = await network.readKeyValue(theContract, "readVfasset", asset);
+//     asset = JSON.parse(asset);
+//     console.log(`This is the asset number ${asset.id}`);
 // };
 
-// order = JSON.parse(order);
-// console.log(`This is the order number ${order.orderNo}`);
+// asset = JSON.parse(asset);
+// console.log(`This is the asset number ${asset.id}`);
 // console.log(new Date());
-// // read(newOrder.orderNo);
+// // read(newasset.id);
 
 // let buffer = network.createKeyValue(
 //     theContract,
-//     "createVfOrder",
-//     newOrder.orderNo,
-//     JSON.stringify(newOrder)
+//     "createVfasset",
+//     newasset.id,
+//     JSON.stringify(newasset)
 // );
 
-const addNewOrder = async newOrder => {
-    await network.createKeyValue(
-        theContract,
-        "createOrder",
-        newOrder.orderNo,
-        JSON.stringify(newOrder)
-    );
+// createasset
+// createassetWithEvent
+// createassetWithReturn
+// createassetWithReturnFromInternalCall
 
-    await testyOne(newOrder.orderNo);
-    // order = JSON.parse(order);
-    // console.log(order);
+const getHistory = async id => {
+  sb.clear();
+  let order = {};
+  let res = await network.getHistoryForKey(theContract, 'getHistoryForKey', id);
+
+  const js = JSON.parse(res);
+  //Convert the array of ASCII values into a character string
+  js.data
+    .toString()
+    .split(',')
+    .forEach(s => sb.append(String.fromCharCode(parseInt(s, 10))));
+  //Parse the string back into a JSON object
+  const myJson = JSON.parse(sb.toString());
+  console.log(
+    '--------------------------------------------------------------------'
+  );
+
+  //Now all items in the history object array can be accessed
+  for (var myKey in myJson) {
+    // console.log(myJson[myKey].Value);
+    order = myJson[myKey].Value;
+
+    const dt = new Date(parseInt(myJson[myKey].Timestamp.seconds.low) * 1000);
+
+    order.Timestamp = dt;
+    order.TxId = myJson[myKey].TxId;
+  }
+
+  // console.log(JSON.stringify(order));
+
+  // console.log(
+  //   '--------------------------------------------------------------------'
+  // );
+
+  return order;
 };
 
-// readNewOrder(newOrder);
-addNewOrder(createVfOrderObject("MS100027"));
-// updateNewOrder(createVfOrderObject("MS100020"));
+const addNewAsset = async newAsset => {
+  await network.createKeyValue(
+    theContract,
+    'createAssetWithEvent',
+    newAsset.id,
+    JSON.stringify(newAsset)
+  );
+
+  //   const order = await getHistory(newAsset.id);
+  //   console.log(JSON.stringify(order));
+};
+
+let newAsset = createOrderObject('7F3DC60F-E16F-412E-AF1F-619775935E95');
+// network.keyExists(theContract, 'assetExists', newAsset.id);
+// readNewAsset(newAsset);
+// addNewAsset(newAsset);
+updateNewAsset(newAsset);
 // testy();
-// testyOne(newOrder.orderNo);
+// testyOne(newAsset.id);
 // MS100004  MS100010
 
-// saveBatchfeedBatch(100004, 100020, false);
-// network.keyExists(theContract, "orderExists", "MS100001");
+// saveBatchfeedBatch(100003, 100020, false);
