@@ -298,14 +298,15 @@ const updateitemroute = async (req, res) => {
 const getQueryroute = async (req, res) => {
     try {
         let DataIn = req.body;
-        if (!("query_string" in DataIn)) {
-            console.error("" + classData.displayName + "  querystring does not exists");
-            res.status(404).send(tools.responseFormat(null, "The query string does not exists", false, 404));
-        }
+        
         const classData = jsonContent[req.params.name];
         const primaryKey = classData.primaryKey;
         const databaseId = classData.database_name;
         let containerId = DataIn.folder_path + "" + classData.container_name;
+        if (!("query_string" in DataIn)) {
+            console.error("" + classData.displayName + "  querystring does not exists");
+            res.status(404).send(tools.responseFormat(null, "The query string does not exists", false, 404));
+        }
         delete DataIn.folder_path;
 
         const querySpec = {
@@ -316,13 +317,20 @@ const getQueryroute = async (req, res) => {
             }]
         };
 
+        let obj = DataIn.querystring;
+        if(tools.IsJsonString(DataIn.querystring))
+        {
+           obj = JSON.parse(DataIn.querystring);
+        }
+        console.log("queryString " + classData.lower_name + " is " + JSON.stringify(obj) + "");
+
         const cosmosClient = new CosmosClient({
             endpoint: cosmos_config,
             key: cosmos_key
         });
         const taskDao = new TaskDao(cosmosClient, databaseId, containerId, primaryKey);
         taskDao.init().then(() => {
-            taskDao.find(DataIn.querystring).then(body => {
+            taskDao.find(obj).then(body => {
                 console.log("Query Body " + util.inspect(body, {
                     showHidden: false,
                     depth: null
