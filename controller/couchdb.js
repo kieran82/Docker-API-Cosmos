@@ -317,10 +317,10 @@ const getQueryroute = async (req, res) => {
             }]
         };
 
-        let obj = DataIn.querystring;
-        if(tools.IsJsonString(DataIn.querystring))
+        let obj = DataIn.query_string;
+        if(tools.IsJsonString(DataIn.query_string))
         {
-           obj = JSON.parse(DataIn.querystring);
+           obj = JSON.parse(DataIn.query_string);
         }
         console.log("queryString " + classData.lower_name + " is " + JSON.stringify(obj) + "");
 
