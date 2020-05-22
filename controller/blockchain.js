@@ -133,6 +133,8 @@ const additemroute = async (req, res) => {
         }
         let classData = jsonContent[req.params.name];
         let contract_name = DataIn.contract_name;
+
+        console.log("adding item with contract name: " + contract_name);
         console.log("class results: " + contract_name);
         let id_variable = "";
         if (!("id" in DataIn)) {
@@ -184,6 +186,7 @@ const updateitemroute = async (req, res) => {
         let classData = jsonContent[req.params.name];
         let contract_name = DataIn.contract_name;
         console.log("class results: " + contract_name);
+        console.log("updating item with contract name: " + contract_name);
         let id_variable = "";
         if (!("id" in DataIn)) {
             id_variable = DataIn[classData.keyName];
@@ -327,7 +330,7 @@ const getQueryroute = async (req, res) => {
         } else {
             let jsonArray = [];
             const jsarr = JSON.parse(result);
-            console.log("received json results: " + jsarr);
+            console.log(`received json results: ${jsarr}`);
             jsarr.forEach(function (element) {
                 let Valuestr = element.Value;
                 jsonArray.push(Valuestr);
