@@ -10,8 +10,6 @@
             "reading": "readAsset",
             "creating": "createAsset",
             "updating": "updateAsset",
-            "errigal_creating": "createOrder",
-            "errigal_updating": "updateOrder",
             "get_history": "getHistoryForKey",
             "get_state_by_range": "getStateByRange",
             "get_query_result": "getQueryResult"
@@ -31,8 +29,6 @@
             "reading": "readAsset",
             "creating": "createAsset",
             "updating": "updateAsset",
-            "errigal_creating": "createOrder",
-            "errigal_updating": "updateOrder",
             "get_history": "getHistoryForKey",
             "get_state_by_range": "getStateByRange",
             "get_query_result": "getQueryResult"
@@ -52,8 +48,6 @@
             "reading": "readAsset",
             "creating": "createAsset",
             "updating": "updateAsset",
-            "errigal_creating": "createOrder",
-            "errigal_updating": "updateOrder",
             "get_history": "getHistoryForKey",
             "get_state_by_range": "getStateByRange",
             "get_query_result": "getQueryResult"
@@ -73,8 +67,6 @@
             "reading": "readAsset",
             "creating": "createAsset",
             "updating": "updateAsset",
-            "errigal_creating": "createOrder",
-            "errigal_updating": "updateOrder",
             "get_history": "getHistoryForKey",
             "get_state_by_range": "getStateByRange",
             "get_query_result": "getQueryResult"
