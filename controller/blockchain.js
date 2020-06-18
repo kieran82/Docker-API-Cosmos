@@ -36,7 +36,7 @@ const checkroute = async (req, res) => {
         try {
             result = await multi_network.keyExists(contract_name, classData.methods.checkExists, DataIn.id);
         } catch (error) {
-            throw(error);
+            throw error;
         }
         console.log("testing return results: " + result);
         console.log("check " + classData.lower_name + " id " + DataIn.id + " exists");
@@ -78,7 +78,7 @@ const getitemroute = async (req, res) => {
         try {
             result = await multi_network.readKeyValue(contract_name, classData.methods.reading, DataIn.id);
         } catch (error) {
-            throw(error);
+            throw error;
         }
         console.log("testing return results: " + result);
         console.log("get " + classData.lower_name + " id " + DataIn.id + " details");
@@ -119,7 +119,7 @@ const deleteitemroute = async (req, res) => {
         try {
             result = await multi_network.deleteKeyValue(contract_name, classData.methods.reading, DataIn.id);
         } catch (error) {
-            throw(error);
+            throw error;
         }
         console.log("testing return results: " + result);
         console.log("deleting " + classData.lower_name + " id " + DataIn.id + " details");
@@ -166,26 +166,27 @@ const additemroute = async (req, res) => {
         console.log("" + classData.lower_name + " id results: " + keychk);
         console.log("received results: " + JSON.stringify(DataIn));
         console.log("adding " + classData.lower_name + " id " + keychk + " with following data " + JSON.stringify(DataIn) + "");
-        await multi_network.createKeyValue(contract_name, classData.methods.creating, keychk, JSON.stringify(DataIn)).then(result => {
-            console.log("get results: " + result);
-            if (tools.checkBool(result)) {
-                console.log("" + classData.displayName + " " + keychk + " was added");
-                const hresult = await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id);
-                console.log("testing return results: " + hresult);
-                console.log("get history " + classData.lower_name + " id " + DataIn.id + " history");
-                if (! tools.isEmpty(hresult)) {
-                    res.send(tools.responseFormat(tools.bufferToString(hresult), DataIn.id + " " + classData.displayName + " was added", true, 200));
-                } else {
-                    res.send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " was added", true, 200));
-                }
+        let result;
+        try {
+            result = await multi_network.createKeyValue(contract_name, classData.methods.creating, keychk, JSON.stringify(DataIn));
+        } catch (error) {
+            throw error;
+        }
+        console.log("get results: " + result);
+        if (tools.checkBool(result)) {
+            console.log("" + classData.displayName + " " + keychk + " was added");
+            const hresult = await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id);
+            console.log("testing return results: " + hresult);
+            console.log("get history " + classData.lower_name + " id " + DataIn.id + " history");
+            if (! tools.isEmpty(hresult)) {
+                res.send(tools.responseFormat(tools.bufferToString(hresult), DataIn.id + " " + classData.displayName + " was added", true, 200));
             } else {
-                console.error(result);
-                res.status(404).send(tools.responseFormat(result, DataIn.id + " " + classData.displayName + " was not added", false, 404));
+                res.send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " was added", true, 200));
             }
-          })
-          .catch(err => {
-            throw err;
-          });
+        } else {
+            console.error(result);
+            res.status(404).send(tools.responseFormat(result, DataIn.id + " " + classData.displayName + " was not added", false, 404));
+        }
     } catch (e) { // this will eventually be handled by your error handling middleware
         console.error(e);
         res.status(404).send(tools.responseFormat(null, "Error Occurred " + e, false, 404));
@@ -222,14 +223,9 @@ const updateitemroute = async (req, res) => {
         console.log("updating " + classData.lower_name + " id " + keychk + " with following data " + JSON.stringify(DataIn) + "");
         let result;
         try {
-            result = await multi_network.updateKeyValue(contract_name, classData.methods.updating, keychk, JSON.stringify(DataIn))
-            .then(function(body){
-                result = body;
-            }).catch(function(error) {
-                throw(error);
-            });
+            result = await multi_network.updateKeyValue(contract_name, classData.methods.updating, keychk, JSON.stringify(DataIn));
         } catch (error) {
-            throw(error);
+            throw error;
         }
         console.log("get results: " + result);
         if (tools.checkBool(result)) {
@@ -271,7 +267,7 @@ const getHistoryroute = async (req, res) => {
         try {
             result = await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id);
         } catch (error) {
-            throw(error);
+            throw error;
         }
         console.log("testing return results: " + result);
         console.log("get " + classData.lower_name + " id " + DataIn.id + " history");
@@ -320,7 +316,7 @@ const getRangeroute = async (req, res) => {
         try {
             result = await multi_network.getStateByRange(contract_name, classData.methods.get_state_by_range, range_from, range_to);
         } catch (error) {
-            throw(error);
+            throw error;
         }
 
         console.log("testing script results: " + result);
@@ -364,7 +360,7 @@ const getQueryroute = async (req, res) => {
         try {
             result = await multi_network.getQueryResult(contract_name, classData.methods.get_query_result, DataIn.query_string);
         } catch (error) {
-            throw(error);
+            throw error;
         }
 
         console.log("received results: " + result);
