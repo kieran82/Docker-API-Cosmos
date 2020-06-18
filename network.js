@@ -44,7 +44,7 @@ module.exports = function(configOBJ) {
 			return (retVal === true || retVal == "true" ? true : false );
 			} catch (error) {
 			console.error(`Failed to submit keyExists transaction: ${error}`);
-			thow(error);
+			throw(error);
 		}
 	}
 	
@@ -75,7 +75,7 @@ module.exports = function(configOBJ) {
 			return true;
 			} catch (error) {
 			console.error(`Failed to submit createKeyValue transaction: ${error}`);
-			thow(error);
+			throw(error);
 
 		}
 	}
@@ -106,7 +106,7 @@ module.exports = function(configOBJ) {
 			return true;
 			} catch (error) {
 			console.error(`Failed to submit transaction: ${error}`);
-			thow(error);
+			throw(error);
 		}
 	}
 	
@@ -139,7 +139,7 @@ module.exports = function(configOBJ) {
 			
 			} catch (error) {
 			console.error(`Failed to evaluate transaction: ${error}`);
-			thow(error);
+			throw(error);
 		}
 	}
 	
@@ -168,7 +168,7 @@ module.exports = function(configOBJ) {
 			return true;
 			} catch (error) {
 			console.error(`Failed to submit transaction: ${error}`);
-			thow(error);
+			throw(error);
 		}
 	}
 	
@@ -199,7 +199,7 @@ module.exports = function(configOBJ) {
 			
 			} catch (error) {
 			console.error(`Failed to submit transaction: ${error}`);
-			thow(error);
+			throw(error);
 		}
 	}
 	
@@ -229,7 +229,7 @@ module.exports = function(configOBJ) {
 			
 			} catch (error) {
 			console.error(`Failed to submit transaction: ${error}`);
-			thow(error);
+			throw(error);
 		}
 	}
 	
@@ -259,7 +259,7 @@ module.exports = function(configOBJ) {
 			
 			} catch (error) {
 			console.error(`Failed to submit transaction: ${error}`);
-			thow(error);
+			throw(error);
 		}
 	}	
 
