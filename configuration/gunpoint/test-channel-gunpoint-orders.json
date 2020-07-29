@@ -1,0 +1,41 @@
+{
+  "name": "verifishmspprofile",
+  "description": "Network on IBP v2",
+  "version": "1.0.0",
+  "client": {
+    "organization": "verifishmsp"
+  },
+  "organizations": {
+    "verifishmsp": {
+      "mspid": "verifishmsp",
+      "certificateAuthorities": [
+        "nd16936-verifishca.vfact-aldi-fra05-b3c-4x16-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7054"
+      ],
+      "peers": [
+        "nd16936-verifishpeer.vfact-aldi-fra05-b3c-4x16-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7051"
+      ]
+    }
+  },
+  "peers": {
+    "nd16936-verifishpeer.vfact-aldi-fra05-b3c-4x16-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7051": {
+      "url": "grpcs://nd16936-verifishpeer.vfact-aldi-fra05-b3c-4x16-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7051",
+      "tlsCACerts": {
+        "pem": "-----BEGIN CERTIFICATE-----\nMIIB/jCCAaSgAwIBAgIUQORcSRAX/toaWiGaaALRE8zL8R4wCgYIKoZIzj0EAwIw\nXTELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQK\nEwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMQ4wDAYDVQQDEwV0bHNjYTAe\nFw0yMDA3MjQxMzE1MDBaFw0zNTA3MjExMzE1MDBaMF0xCzAJBgNVBAYTAlVTMRcw\nFQYDVQQIEw5Ob3J0aCBDYXJvbGluYTEUMBIGA1UEChMLSHlwZXJsZWRnZXIxDzAN\nBgNVBAsTBkZhYnJpYzEOMAwGA1UEAxMFdGxzY2EwWTATBgcqhkjOPQIBBggqhkjO\nPQMBBwNCAATERGpY9y4+p5BVNYfPeLJQoJaMDX44+96QYJUnYXoohFoeKSn/nWhd\nlNZw9Uwi2tLzshb3EWxMSjj0Pz1hpLrIo0IwQDAOBgNVHQ8BAf8EBAMCAQYwDwYD\nVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUhB1z4sAktxhITMciuRYQiePBU7AwCgYI\nKoZIzj0EAwIDSAAwRQIhAJsfJWzT/yYItI380+Bx/wozkgzSZJ8Eq1N0fFZ+Vzm5\nAiAsxVol88h6plHGOaByThW6wHbvB0iHujf1Q7/vPdtyfA==\n-----END CERTIFICATE-----\n"
+      },
+      "grpcOptions": {
+        "ssl-target-name-override": "nd16936-verifishpeer.vfact-aldi-fra05-b3c-4x16-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud"
+      }
+    }
+  },
+  "certificateAuthorities": {
+    "nd16936-verifishca.vfact-aldi-fra05-b3c-4x16-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7054": {
+      "url": "https://nd16936-verifishca.vfact-aldi-fra05-b3c-4x16-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7054",
+      "caName": "ca",
+      "tlsCACerts": {
+        "pem": [
+          "-----BEGIN CERTIFICATE-----\nMIIDrDCCA1OgAwIBAgIRAJgTSB506HdVHwztW/Tb0NowCgYIKoZIzj0EAwIwgdgx\nCzAJBgNVBAYTAlVTMRcwFQYDVQQIEw5Ob3J0aCBDYXJvbGluYTEPMA0GA1UEBxMG\nRHVyaGFtMQwwCgYDVQQKEwNJQk0xEzARBgNVBAsTCkJsb2NrY2hhaW4xfDB6BgNV\nBAMTc25kMTY5MzYtdmVyaWZpc2hjYS52ZmFjdC1hbGRpLWZyYTA1LWIzYy00eDE2\nLTJkODNkMGU5OGNiZjk1YzRiMTJlMTUzYTVhYWZmZjQwLTAwMDAuZXUtZGUuY29u\ndGFpbmVycy5hcHBkb21haW4uY2xvdWQwHhcNMjAwNzI0MTMyMDEzWhcNMzAwNzIy\nMTMyMDEzWjCB2DELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5h\nMQ8wDQYDVQQHEwZEdXJoYW0xDDAKBgNVBAoTA0lCTTETMBEGA1UECxMKQmxvY2tj\naGFpbjF8MHoGA1UEAxNzbmQxNjkzNi12ZXJpZmlzaGNhLnZmYWN0LWFsZGktZnJh\nMDUtYjNjLTR4MTYtMmQ4M2QwZTk4Y2JmOTVjNGIxMmUxNTNhNWFhZmZmNDAtMDAw\nMC5ldS1kZS5jb250YWluZXJzLmFwcGRvbWFpbi5jbG91ZDBZMBMGByqGSM49AgEG\nCCqGSM49AwEHA0IABNdA1BWosUJROD+xwfNdReRyY7njiTSHPMQqETxTguS2NcBV\nTQ5QIf/pvh+ucNIEtwHLSA+IzaFEdDMnPa5QE9ajgfswgfgwgfUGA1UdEQSB7TCB\n6oJzbmQxNjkzNi12ZXJpZmlzaGNhLnZmYWN0LWFsZGktZnJhMDUtYjNjLTR4MTYt\nMmQ4M2QwZTk4Y2JmOTVjNGIxMmUxNTNhNWFhZmZmNDAtMDAwMC5ldS1kZS5jb250\nYWluZXJzLmFwcGRvbWFpbi5jbG91ZIJzbmQxNjkzNi12ZXJpZmlzaGNhLnZmYWN0\nLWFsZGktZnJhMDUtYjNjLTR4MTYtMmQ4M2QwZTk4Y2JmOTVjNGIxMmUxNTNhNWFh\nZmZmNDAtMDAwMC5ldS1kZS5jb250YWluZXJzLmFwcGRvbWFpbi5jbG91ZDAKBggq\nhkjOPQQDAgNHADBEAiBXMA7Xz22XRRX0tQkKCzlVa0qZxOZfdml/EegIe5tdfQIg\nP5le+93VmiC5jQw6Ln8LIbh3OFZbqmerBN4Axtv8K40=\n-----END CERTIFICATE-----\n"
+        ]
+      }
+    }
+  }
+}

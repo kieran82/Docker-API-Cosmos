@@ -1,47 +1,47 @@
 {
-    "name": "mychannel",
-    "description": "Network on IBP v2",
-    "version": "1.0.0",
-    "client": {
-        "organization": "verifishmsp"
-    },
-    "organizations": {
-        "verifishmsp": {
-            "mspid": "verifishmsp",
-            "peers": [
-                "nbd2267-verifishpeer.vf-prod-cluster-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7051"
-            ],
-            "certificateAuthorities": [
-                "nbd2267-verifishca.vf-prod-cluster-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7054"
-            ]
-        }
-    },
-    "orderers": {
-        "nbd2267-orderer1.vf-prod-cluster-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7050": {
-            "url": "grpcs://nbd2267-orderer1.vf-prod-cluster-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7050",
-            "tlsCACerts": {
-                "pem": "-----BEGIN CERTIFICATE-----\nMIICITCCAcigAwIBAgIUIznrgFWOmodeHg/sBQ5DVcMuPB8wCgYIKoZIzj0EAwIw\nZTELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQK\nEwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRYwFAYDVQQDEw1PcmRlcmVy\nQ0EtdGxzMB4XDTIwMDUxNDE0MjcwMFoXDTM1MDUxMTE0MjcwMFowZTELMAkGA1UE\nBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQKEwtIeXBlcmxl\nZGdlcjEPMA0GA1UECxMGRmFicmljMRYwFAYDVQQDEw1PcmRlcmVyQ0EtdGxzMFkw\nEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEo0AGse54lzUaJZ+sPsg0IfYc/pos0Obd\nXtSZEWYdTcxg8t6DhF+QklRj+PLITQHiCIz+QA69Z1o3Nm9GolWusKNWMFQwDgYD\nVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8CAQEwHQYDVR0OBBYEFCNz1ALR\njx1S7ayl/k+ehMfW9OoQMA8GA1UdEQQIMAaHBArXUQMwCgYIKoZIzj0EAwIDRwAw\nRAIgMts+XyZPS1fZe3+0JXTe2t56TiMTuthHJU4Yw73CegsCIHW0iDIYF1jW+4tB\nGYWh/0wT/MG8mrF5NQSY2hXU7pIe\n-----END CERTIFICATE-----\n"
-            }
-        }
-    },
-    "peers": {
-        "nbd2267-verifishpeer.vf-prod-cluster-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7051": {
-            "url": "grpcs://nbd2267-verifishpeer.vf-prod-cluster-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7051",
-            "tlsCACerts": {
-                "pem": "-----BEGIN CERTIFICATE-----\nMIICJDCCAcqgAwIBAgIUbtDIz/l8o2PgxFNxUXltno4qRGEwCgYIKoZIzj0EAwIw\nZjELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQK\nEwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRcwFQYDVQQDEw5WZXJpZmlz\naENBLXRsczAeFw0yMDA1MTQxMzM1MDBaFw0zNTA1MTExMzM1MDBaMGYxCzAJBgNV\nBAYTAlVTMRcwFQYDVQQIEw5Ob3J0aCBDYXJvbGluYTEUMBIGA1UEChMLSHlwZXJs\nZWRnZXIxDzANBgNVBAsTBkZhYnJpYzEXMBUGA1UEAxMOVmVyaWZpc2hDQS10bHMw\nWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQaZk5+n8OgqxcdDHW6laZrMXdIDYdN\nVTegACMdZA06NCvcGd5szgWrWR7OxyuNA9pG87V6uCuboh0W6G7BqFiio1YwVDAO\nBgNVHQ8BAf8EBAMCAQYwEgYDVR0TAQH/BAgwBgEB/wIBATAdBgNVHQ4EFgQUl5mQ\n57+vxs9bi3DCfzDhiTFbdCcwDwYDVR0RBAgwBocECtdRAzAKBggqhkjOPQQDAgNI\nADBFAiEAzIMlPjqAkIEASKTTbrk6ZlI4WPSwdKyFW9bHDDAYsgkCIGmWbg25L7lA\nuJMkfriTuTqW59VmPxblnplHJei71EJ0\n-----END CERTIFICATE-----\n"
-            },
-            "grpcOptions": {
-                "ssl-target-name-override": "nbd2267-verifishpeer.vf-prod-cluster-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud"
-            }
-        }
-    },
-    "certificateAuthorities": {
-        "nbd2267-verifishca.vf-prod-cluster-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7054": {
-            "url": "https://nbd2267-verifishca.vf-prod-cluster-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7054",
-            "caName": "ca",
-            "tlsCACerts": {
-                "pem": "-----BEGIN CERTIFICATE-----\r\nMIIDljCCAv+gAwIBAgIJSdGxUh4xPuzgMA0GCSqGSIb3DQEBBQUAMIHPMXIwcAYD\r\nVQQDE2luYmQyMjY3LXZlcmlmaXNoY2EudmYtcHJvZC1jbHVzdGVyLTJkODNkMGU5\r\nOGNiZjk1YzRiMTJlMTUzYTVhYWZmZjQwLTAwMDAuZXUtZGUuY29udGFpbmVycy5h\r\ncHBkb21haW4uY2xvdWQxCzAJBgNVBAYTAlVTMRcwFQYDVQQIEw5Ob3J0aCBDYXJv\r\nbGluYTEQMA4GA1UEBxMHUmFsZWlnaDEMMAoGA1UEChMDSUJNMRMwEQYDVQQLEwpC\r\nbG9ja2NoYWluMB4XDTIwMDUxNDEzMzczMloXDTIxMDUxNDEzMzczMlowgc8xcjBw\r\nBgNVBAMTaW5iZDIyNjctdmVyaWZpc2hjYS52Zi1wcm9kLWNsdXN0ZXItMmQ4M2Qw\r\nZTk4Y2JmOTVjNGIxMmUxNTNhNWFhZmZmNDAtMDAwMC5ldS1kZS5jb250YWluZXJz\r\nLmFwcGRvbWFpbi5jbG91ZDELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENh\r\ncm9saW5hMRAwDgYDVQQHEwdSYWxlaWdoMQwwCgYDVQQKEwNJQk0xEzARBgNVBAsT\r\nCkJsb2NrY2hhaW4wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALAw/nv5fhix\r\nUs0hLTYCyh/UVVTyHEPD+Az1GFYVcsFMdXbYYG6tTE55ZFyXkH8toh0JYuTlGw2J\r\njXbCu3AOAI032Q1OWSFefuAhUWfzWQSq3cuZUOBqKV1FNgHgAS35PsqK7a/H6zV8\r\nXEVQycD24xrJh6WsPXF2OwwhHsCSyg9JAgMBAAGjeDB2MHQGA1UdEQRtMGuCaW5i\r\nZDIyNjctdmVyaWZpc2hjYS52Zi1wcm9kLWNsdXN0ZXItMmQ4M2QwZTk4Y2JmOTVj\r\nNGIxMmUxNTNhNWFhZmZmNDAtMDAwMC5ldS1kZS5jb250YWluZXJzLmFwcGRvbWFp\r\nbi5jbG91ZDANBgkqhkiG9w0BAQUFAAOBgQAYUaRNdUv4JdN8/5NSNF7/VH9OxQ8u\r\nnHh3tSVtFzsLA3N9ks9L9eBBPpIcDdpMBlpQpzFkbJ7GjueWs5SKCbez9ECSvVbu\r\nhLSplafEawbjcfDe9eYcb36dGG7QhJGEGp60+xnQx8sTFNvimfo7nHGkjdEvy19f\r\n7yc4LHkq/O20uA==\r\n-----END CERTIFICATE-----\r\n"
-            }
-        }
+  "name": "mychannel",
+  "description": "Network on IBP v2",
+  "version": "1.0.0",
+  "client": {
+    "organization": "verifishmsp"
+  },
+  "organizations": {
+    "verifishmsp": {
+      "mspid": "verifishmsp",
+      "peers": [
+        "nbd2267-verifishpeer.vf-prod-cluster-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7051"
+      ],
+      "certificateAuthorities": [
+        "nbd2267-verifishca.vf-prod-cluster-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7054"
+      ]
     }
+  },
+  "orderers": {
+    "nbd2267-orderer1.vf-prod-cluster-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7050": {
+      "url": "grpcs://nbd2267-orderer1.vf-prod-cluster-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7050",
+      "tlsCACerts": {
+        "pem": "-----BEGIN CERTIFICATE-----\nMIICITCCAcigAwIBAgIUIznrgFWOmodeHg/sBQ5DVcMuPB8wCgYIKoZIzj0EAwIw\nZTELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQK\nEwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRYwFAYDVQQDEw1PcmRlcmVy\nQ0EtdGxzMB4XDTIwMDUxNDE0MjcwMFoXDTM1MDUxMTE0MjcwMFowZTELMAkGA1UE\nBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQKEwtIeXBlcmxl\nZGdlcjEPMA0GA1UECxMGRmFicmljMRYwFAYDVQQDEw1PcmRlcmVyQ0EtdGxzMFkw\nEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEo0AGse54lzUaJZ+sPsg0IfYc/pos0Obd\nXtSZEWYdTcxg8t6DhF+QklRj+PLITQHiCIz+QA69Z1o3Nm9GolWusKNWMFQwDgYD\nVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8CAQEwHQYDVR0OBBYEFCNz1ALR\njx1S7ayl/k+ehMfW9OoQMA8GA1UdEQQIMAaHBArXUQMwCgYIKoZIzj0EAwIDRwAw\nRAIgMts+XyZPS1fZe3+0JXTe2t56TiMTuthHJU4Yw73CegsCIHW0iDIYF1jW+4tB\nGYWh/0wT/MG8mrF5NQSY2hXU7pIe\n-----END CERTIFICATE-----\n"
+      }
+    }
+  },
+  "peers": {
+    "nbd2267-verifishpeer.vf-prod-cluster-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7051": {
+      "url": "grpcs://nbd2267-verifishpeer.vf-prod-cluster-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7051",
+      "tlsCACerts": {
+        "pem": "-----BEGIN CERTIFICATE-----\nMIICJDCCAcqgAwIBAgIUbtDIz/l8o2PgxFNxUXltno4qRGEwCgYIKoZIzj0EAwIw\nZjELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQK\nEwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRcwFQYDVQQDEw5WZXJpZmlz\naENBLXRsczAeFw0yMDA1MTQxMzM1MDBaFw0zNTA1MTExMzM1MDBaMGYxCzAJBgNV\nBAYTAlVTMRcwFQYDVQQIEw5Ob3J0aCBDYXJvbGluYTEUMBIGA1UEChMLSHlwZXJs\nZWRnZXIxDzANBgNVBAsTBkZhYnJpYzEXMBUGA1UEAxMOVmVyaWZpc2hDQS10bHMw\nWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQaZk5+n8OgqxcdDHW6laZrMXdIDYdN\nVTegACMdZA06NCvcGd5szgWrWR7OxyuNA9pG87V6uCuboh0W6G7BqFiio1YwVDAO\nBgNVHQ8BAf8EBAMCAQYwEgYDVR0TAQH/BAgwBgEB/wIBATAdBgNVHQ4EFgQUl5mQ\n57+vxs9bi3DCfzDhiTFbdCcwDwYDVR0RBAgwBocECtdRAzAKBggqhkjOPQQDAgNI\nADBFAiEAzIMlPjqAkIEASKTTbrk6ZlI4WPSwdKyFW9bHDDAYsgkCIGmWbg25L7lA\nuJMkfriTuTqW59VmPxblnplHJei71EJ0\n-----END CERTIFICATE-----\n"
+      },
+      "grpcOptions": {
+        "ssl-target-name-override": "nbd2267-verifishpeer.vf-prod-cluster-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud"
+      }
+    }
+  },
+  "certificateAuthorities": {
+    "nbd2267-verifishca.vf-prod-cluster-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7054": {
+      "url": "https://nbd2267-verifishca.vf-prod-cluster-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7054",
+      "caName": "ca",
+      "tlsCACerts": {
+        "pem": "-----BEGIN CERTIFICATE-----\r\nMIIDljCCAv+gAwIBAgIJSdGxUh4xPuzgMA0GCSqGSIb3DQEBBQUAMIHPMXIwcAYD\r\nVQQDE2luYmQyMjY3LXZlcmlmaXNoY2EudmYtcHJvZC1jbHVzdGVyLTJkODNkMGU5\r\nOGNiZjk1YzRiMTJlMTUzYTVhYWZmZjQwLTAwMDAuZXUtZGUuY29udGFpbmVycy5h\r\ncHBkb21haW4uY2xvdWQxCzAJBgNVBAYTAlVTMRcwFQYDVQQIEw5Ob3J0aCBDYXJv\r\nbGluYTEQMA4GA1UEBxMHUmFsZWlnaDEMMAoGA1UEChMDSUJNMRMwEQYDVQQLEwpC\r\nbG9ja2NoYWluMB4XDTIwMDUxNDEzMzczMloXDTIxMDUxNDEzMzczMlowgc8xcjBw\r\nBgNVBAMTaW5iZDIyNjctdmVyaWZpc2hjYS52Zi1wcm9kLWNsdXN0ZXItMmQ4M2Qw\r\nZTk4Y2JmOTVjNGIxMmUxNTNhNWFhZmZmNDAtMDAwMC5ldS1kZS5jb250YWluZXJz\r\nLmFwcGRvbWFpbi5jbG91ZDELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENh\r\ncm9saW5hMRAwDgYDVQQHEwdSYWxlaWdoMQwwCgYDVQQKEwNJQk0xEzARBgNVBAsT\r\nCkJsb2NrY2hhaW4wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALAw/nv5fhix\r\nUs0hLTYCyh/UVVTyHEPD+Az1GFYVcsFMdXbYYG6tTE55ZFyXkH8toh0JYuTlGw2J\r\njXbCu3AOAI032Q1OWSFefuAhUWfzWQSq3cuZUOBqKV1FNgHgAS35PsqK7a/H6zV8\r\nXEVQycD24xrJh6WsPXF2OwwhHsCSyg9JAgMBAAGjeDB2MHQGA1UdEQRtMGuCaW5i\r\nZDIyNjctdmVyaWZpc2hjYS52Zi1wcm9kLWNsdXN0ZXItMmQ4M2QwZTk4Y2JmOTVj\r\nNGIxMmUxNTNhNWFhZmZmNDAtMDAwMC5ldS1kZS5jb250YWluZXJzLmFwcGRvbWFp\r\nbi5jbG91ZDANBgkqhkiG9w0BAQUFAAOBgQAYUaRNdUv4JdN8/5NSNF7/VH9OxQ8u\r\nnHh3tSVtFzsLA3N9ks9L9eBBPpIcDdpMBlpQpzFkbJ7GjueWs5SKCbez9ECSvVbu\r\nhLSplafEawbjcfDe9eYcb36dGG7QhJGEGp60+xnQx8sTFNvimfo7nHGkjdEvy19f\r\n7yc4LHkq/O20uA==\r\n-----END CERTIFICATE-----\r\n"
+      }
+    }
+  }
 }
