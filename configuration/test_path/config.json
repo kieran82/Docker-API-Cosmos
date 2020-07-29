@@ -5,14 +5,14 @@
   "archive": "arc",
   "controlFileExtension": ".control",
   "home": "/home/jerome/Documents/sftp",
-  "connection_file": "test-channel-gunpoint-orders.json",
+  "connection_file": "connection_file.json",
   "appAdmin": "app-admin",
   "appAdminSecret": "app-adminpw",
   "orgMSPID": "verifishmsp",
   "caName": "nd16936-verifishca.vfact-aldi-fra05-b3c-4x16-2d83d0e98cbf95c4b12e153a5aafff40-0000.eu-de.containers.appdomain.cloud:7054",
   "userName": "User1@gunpoint.com",
   "wallet": "/wallet",
-  "channel": "verifact-channel",
+  "channel": "test-channel",
   "gatewayDiscovery": {
     "enabled": true,
     "asLocalhost": false
