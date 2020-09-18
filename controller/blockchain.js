@@ -8,7 +8,7 @@ let current_path_location = jsoncontents.work_path;
 let contents = fs.readFileSync(current_path_location + "json/blockchain_config.json");
 let jsonContent = JSON.parse(contents);
 
-const checkroute = async (req, res) => {
+const checkroute = async(req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
@@ -21,11 +21,10 @@ const checkroute = async (req, res) => {
         console.log("name: " + req.params.name);
         console.log("folder: " + DataIn.folder_path);
         console.log("id: " + DataIn.id);
-
-        let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
+        let configOBJ = DataIn.config_json;
         let classData = jsonContent[req.params.name];
         let contract_name = DataIn.contract_name;
-        
+
         console.log("nameobj is " + util.inspect(classData, {
             showHidden: false,
             depth: null
@@ -59,7 +58,7 @@ const checkroute = async (req, res) => {
     }
 };
 
-const getitemroute = async (req, res) => {
+const getitemroute = async(req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
@@ -72,7 +71,7 @@ const getitemroute = async (req, res) => {
         let classData = jsonContent[req.params.name];
         DataIn.id = !("id" in DataIn) ? tools.objectTostring(DataIn, classData.keyName) : tools.numberTostring(DataIn.id);
         let contract_name = DataIn.contract_name;
-        let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
+        let configOBJ = DataIn.config_json;
         const multi_network = require(current_path_location + "network.js")(configOBJ);
         let result;
         try {
@@ -82,7 +81,7 @@ const getitemroute = async (req, res) => {
         }
         console.log("testing return results: " + result);
         console.log("get " + classData.lower_name + " id " + DataIn.id + " details");
-        if (! tools.isEmpty(result)) {
+        if (!tools.isEmpty(result)) {
             console.log("" + classData.lower_name + " " + DataIn.id + ", data: " + result + "");
             let orders = JSON.parse(result);
 
@@ -99,7 +98,7 @@ const getitemroute = async (req, res) => {
     }
 };
 
-const deleteitemroute = async (req, res) => {
+const deleteitemroute = async(req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
@@ -112,7 +111,6 @@ const deleteitemroute = async (req, res) => {
         let classData = jsonContent[req.params.name];
         DataIn.id = !("id" in DataIn) ? tools.objectTostring(DataIn, classData.keyName) : tools.numberTostring(DataIn.id);
         let contract_name = DataIn.contract_name;
-
         let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
         const multi_network = require(current_path_location + "network.js")(configOBJ);
         let result;
@@ -137,7 +135,7 @@ const deleteitemroute = async (req, res) => {
     }
 };
 
-const additemroute = async (req, res) => {
+const additemroute = async(req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
@@ -156,12 +154,14 @@ const additemroute = async (req, res) => {
             id_variable = DataIn[classData.keyName];
         } else {
             id_variable = DataIn.id;
-        } DataIn.id = id_variable;
-        let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
+        }
+        DataIn.id = id_variable;
+        let configOBJ = DataIn.config_json;
         const multi_network = require("../network.js")(configOBJ);
         let fname = contract_name;
         delete DataIn.folder_path;
         delete DataIn.contract_name;
+        delete DataIn.config_json;
         let keychk = tools.objectTostring(DataIn, classData.keyName);
         console.log("" + classData.lower_name + " id results: " + keychk);
         console.log("received results: " + JSON.stringify(DataIn));
@@ -178,7 +178,7 @@ const additemroute = async (req, res) => {
             const hresult = await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id);
             console.log("testing return results: " + hresult);
             console.log("get history " + classData.lower_name + " id " + DataIn.id + " history");
-            if (! tools.isEmpty(hresult)) {
+            if (!tools.isEmpty(hresult)) {
                 res.send(tools.responseFormat(tools.bufferToString(hresult), DataIn.id + " " + classData.displayName + " was added", true, 200));
             } else {
                 res.send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " was added", true, 200));
@@ -193,7 +193,7 @@ const additemroute = async (req, res) => {
     }
 };
 
-const updateitemroute = async (req, res) => {
+const updateitemroute = async(req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
@@ -211,13 +211,14 @@ const updateitemroute = async (req, res) => {
             id_variable = DataIn[classData.keyName];
         } else {
             id_variable = DataIn.id;
-        } DataIn.id = id_variable;
-        let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
+        }
+        DataIn.id = id_variable;
+        let configOBJ = DataIn.config_json;
         const multi_network = require("../network.js")(configOBJ);
         let keychk = tools.objectTostring(DataIn, classData.keyName);
-        let fname = contract_name;
         delete DataIn.folder_path;
         delete DataIn.contract_name;
+        delete DataIn.config_json;
         console.log("" + classData.lower_name + " id results: " + keychk);
         console.log("received results: " + JSON.stringify(DataIn));
         console.log("updating " + classData.lower_name + " id " + keychk + " with following data " + JSON.stringify(DataIn) + "");
@@ -233,11 +234,11 @@ const updateitemroute = async (req, res) => {
             const hresult = await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id);
             console.log("testing return results: " + hresult);
             console.log("get history " + classData.lower_name + " id " + DataIn.id + " history");
-            if (! tools.isEmpty(hresult)) {
+            if (!tools.isEmpty(hresult)) {
                 res.send(tools.responseFormat(tools.bufferToString(hresult), DataIn.id + " " + classData.displayName + " was updated", true, 200));
             } else {
                 res.send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " was updated", true, 200));
-            }           
+            }
         } else {
             console.error(result);
             res.status(404).send(tools.responseFormat(null, classData.displayName + " was not updated", false, 404));
@@ -248,7 +249,7 @@ const updateitemroute = async (req, res) => {
     }
 };
 
-const getHistoryroute = async (req, res) => {
+const getHistoryroute = async(req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
@@ -259,7 +260,7 @@ const getHistoryroute = async (req, res) => {
         }
         let classData = jsonContent[req.params.name];
         let contract_name = DataIn.contract_name;
-        let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
+        let configOBJ = DataIn.config_json;
         const multi_network = require("../network.js")(configOBJ);
         console.log("" + classData.lower_name + " id results: " + DataIn.id);
         console.log("getting " + classData.lower_name + " history " + DataIn.id + "");
@@ -282,7 +283,7 @@ const getHistoryroute = async (req, res) => {
             let arr = tools.stringToJson(changed);
             arr = arr.filter(obj => Object.keys(obj).includes("Timestamp"));
             if (arr.length > 0) {
-                arr.forEach(function (element) {
+                arr.forEach(function(element) {
                     if ("seconds" in element.Timestamp) {
                         const dt = new Date(parseInt(element.Timestamp.seconds.low) * 1000);
                         element.datetime = dt.toISOString();
@@ -301,7 +302,7 @@ const getHistoryroute = async (req, res) => {
     }
 };
 
-const getRangeroute = async (req, res) => {
+const getRangeroute = async(req, res) => {
     try {
         let DataIn = req.body;
         let classData = jsonContent[req.params.name];
@@ -334,7 +335,7 @@ const getRangeroute = async (req, res) => {
     }
 };
 
-const getQueryroute = async (req, res) => {
+const getQueryroute = async(req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
@@ -371,7 +372,7 @@ const getQueryroute = async (req, res) => {
             let jsonArray = [];
             const jsarr = JSON.parse(result);
             console.log(`received json results: ${jsarr}`);
-            jsarr.forEach(function (element) {
+            jsarr.forEach(function(element) {
                 let Valuestr = element.Value;
                 jsonArray.push(Valuestr);
             });
