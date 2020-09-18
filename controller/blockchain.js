@@ -33,7 +33,7 @@ const checkroute = async(req, res) => {
             showHidden: false,
             depth: null
         }));
-        DataIn.id = !("id" in DataIn) ? tools.objectTostring(DataIn, classData.keyName) : tools.numberTostring(DataIn.id);
+        DataIn.id = !("id" in DataIn) ? DataIn[classData.keyName] : DataIn.id;
         const multi_network = require("../network.js")(configOBJ);
         let result;
         try {
@@ -73,7 +73,7 @@ const getitemroute = async(req, res) => {
         }
 
         let classData = jsonContent[req.params.name];
-        DataIn.id = !("id" in DataIn) ? tools.objectTostring(DataIn, classData.keyName) : tools.numberTostring(DataIn.id);
+        DataIn.id = !("id" in DataIn) ? DataIn[classData.keyName] : DataIn.id;
         let contract_name = DataIn.contract_name;
         let configOBJ = DataIn.config_json;
         const multi_network = require(current_path_location + "network.js")(configOBJ);
@@ -113,7 +113,7 @@ const deleteitemroute = async(req, res) => {
         }
         console.log("testing script results: " + DataIn.id);
         let classData = jsonContent[req.params.name];
-        DataIn.id = !("id" in DataIn) ? tools.objectTostring(DataIn, classData.keyName) : tools.numberTostring(DataIn.id);
+        ataIn.id = !("id" in DataIn) ? DataIn[classData.keyName] : DataIn.id;
         let contract_name = DataIn.contract_name;
         let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
         const multi_network = require(current_path_location + "network.js")(configOBJ);
@@ -166,19 +166,19 @@ const additemroute = async(req, res) => {
         delete DataIn.folder_path;
         delete DataIn.contract_name;
         delete DataIn.config_json;
-        let keychk = tools.objectTostring(DataIn, classData.keyName);
-        console.log("" + classData.lower_name + " id results: " + keychk);
+        DataIn[classData.keyName]
+        console.log("" + classData.lower_name + " id results: " + DataIn[classData.keyName]);
         console.log("received results: " + JSON.stringify(DataIn));
-        console.log("adding " + classData.lower_name + " id " + keychk + " with following data " + JSON.stringify(DataIn) + "");
+        console.log("adding " + classData.lower_name + " id " + DataIn[classData.keyName] + " with following data " + JSON.stringify(DataIn) + "");
         let result;
         try {
-            result = await multi_network.createKeyValue(contract_name, classData.methods.creating, keychk, JSON.stringify(DataIn));
+            result = await multi_network.createKeyValue(contract_name, classData.methods.creating, DataIn[classData.keyName], JSON.stringify(DataIn));
         } catch (error) {
             throw error;
         }
         console.log("get results: " + result);
         if (tools.checkBool(result)) {
-            console.log("" + classData.displayName + " " + keychk + " was added");
+            console.log("" + classData.displayName + " " + DataIn[classData.keyName] + " was added");
             const hresult = await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id);
             console.log("testing return results: " + hresult);
             console.log("get history " + classData.lower_name + " id " + DataIn.id + " history");
@@ -219,22 +219,21 @@ const updateitemroute = async(req, res) => {
         DataIn.id = id_variable;
         let configOBJ = DataIn.config_json;
         const multi_network = require("../network.js")(configOBJ);
-        let keychk = tools.objectTostring(DataIn, classData.keyName);
         delete DataIn.folder_path;
         delete DataIn.contract_name;
         delete DataIn.config_json;
-        console.log("" + classData.lower_name + " id results: " + keychk);
+        console.log("" + classData.lower_name + " id results: " + DataIn[classData.keyName]);
         console.log("received results: " + JSON.stringify(DataIn));
-        console.log("updating " + classData.lower_name + " id " + keychk + " with following data " + JSON.stringify(DataIn) + "");
+        console.log("updating " + classData.lower_name + " id " + DataIn[classData.keyName] + " with following data " + JSON.stringify(DataIn) + "");
         let result;
         try {
-            result = await multi_network.updateKeyValue(contract_name, classData.methods.updating, keychk, JSON.stringify(DataIn));
+            result = await multi_network.updateKeyValue(contract_name, classData.methods.updating, DataIn[classData.keyName], JSON.stringify(DataIn));
         } catch (error) {
             throw error;
         }
         console.log("get results: " + result);
         if (tools.checkBool(result)) {
-            console.log("" + classData.displayName + " " + keychk + " was updated");
+            console.log("" + classData.displayName + " " + DataIn[classData.keyName] + " was updated");
             const hresult = await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id);
             console.log("testing return results: " + hresult);
             console.log("get history " + classData.lower_name + " id " + DataIn.id + " history");
