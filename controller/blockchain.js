@@ -7,6 +7,10 @@ let jsoncontents = JSON.parse(scontents);
 let current_path_location = jsoncontents.work_path;
 let contents = fs.readFileSync(current_path_location + "json/blockchain_config.json");
 let jsonContent = JSON.parse(contents);
+let cdirectory = __dirname;
+console.log("cdirectory = " + cdirectory);
+console.log("cdirectory1 = " + __dirname);
+console.log("cwd = " + process.cwd());
 
 const checkroute = async(req, res) => {
     try {
