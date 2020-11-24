@@ -1,4 +1,5 @@
 {
     "bracket-pair-colorizer-2.forceUniqueOpeningColor": true,
-    "bracket-pair-colorizer-2.forceIterationColorCycle": true
+    "bracket-pair-colorizer-2.forceIterationColorCycle": true,
+    "vue3snippets.enable-compile-vue-file-on-did-save-code": true
 }

@@ -16,10 +16,10 @@ const checkroute = async(req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
-            res.status(404).send(tools.responseFormat(null, "database prefix is missing", false, 404));
+            res.status(400).send(tools.responseFormat(null, "database prefix is missing", false, 400));
         }
         if (jsonContent[req.params.name] === undefined) {
-            res.status(404).send(tools.responseFormat(null, "name is not found in config file", false, 404));
+            res.status(400).send(tools.responseFormat(null, "name is not found in config file", false, 400));
         }
 
         console.log("name: " + req.params.name);
@@ -37,7 +37,13 @@ const checkroute = async(req, res) => {
         const multi_network = require("../network.js")(configOBJ);
         let result;
         try {
-            result = await multi_network.keyExists(contract_name, classData.methods.checkExists, DataIn.id);
+            await multi_network.keyExists(contract_name, classData.methods.checkExists, DataIn.id)
+                .then(data => {
+                    result = data;
+                }).catch(err => {
+                    console.log(err);
+                    throw err;
+                });
         } catch (error) {
             throw error;
         }
@@ -50,15 +56,15 @@ const checkroute = async(req, res) => {
                 res.send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " does exists", true, 200));
             } else {
                 console.log("" + classData.lower_name + " id " + DataIn.id + " does not exists");
-                res.status(404).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " does not exists", false, 404));
+                res.status(400).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " does not exists", false, 400));
             }
         } else {
             console.error(result);
-            res.status(404).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " does not exists", false, 404));
+            res.status(400).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " does not exists", false, 400));
         }
     } catch (e) { // this will eventually be handled by your error handling middleware
         console.error(e);
-        res.status(404).send(tools.responseFormat(null, "Error Occurred " + e, false, 404));
+        res.status(400).send(tools.responseFormat(null, "Error Occurred " + e, false, 400));
     }
 };
 
@@ -66,10 +72,10 @@ const getitemroute = async(req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
-            res.status(404).send(tools.responseFormat(null, "database prefix is missing", false, 404));
+            res.status(400).send(tools.responseFormat(null, "database prefix is missing", false, 400));
         }
         if (jsonContent[req.params.name] === undefined) {
-            res.status(404).send(tools.responseFormat(null, "name is not found in config file", false, 404));
+            res.status(400).send(tools.responseFormat(null, "name is not found in config file", false, 400));
         }
 
         let classData = jsonContent[req.params.name];
@@ -79,26 +85,32 @@ const getitemroute = async(req, res) => {
         const multi_network = require(current_path_location + "network.js")(configOBJ);
         let result;
         try {
-            result = await multi_network.readKeyValue(contract_name, classData.methods.reading, DataIn.id);
+            await multi_network.readKeyValue(contract_name, classData.methods.reading, DataIn.id)
+                .then(response => response.json())
+                .then(data => {
+                    data = tools.convertJSONString(data);
+                    if (tools.isEmpty(data)) {
+                        console.error("Empty object returned");
+                        res.send(tools.responseFormat(result, DataIn.id + " " + classData.displayName + " not found", false, 400));
+                    }
+                    result = data;
+                }).catch(err => {
+                    console.log(err);
+                    throw err;
+                });
         } catch (error) {
             throw error;
         }
         console.log("testing return results: " + result);
         console.log("get " + classData.lower_name + " id " + DataIn.id + " details");
-        if (!tools.isEmpty(result)) {
-            console.log("" + classData.lower_name + " " + DataIn.id + ", data: " + result + "");
-            let orders = JSON.parse(result);
+        console.log("" + classData.lower_name + " " + DataIn.id + ", data: " + result + "");
+        console.log(JSON.stringify(result));
 
-            console.log(JSON.stringify(orders));
+        res.send(tools.responseFormat(result, DataIn.id + " " + classData.displayName + " found", true, 200));
 
-            res.send(tools.responseFormat(orders, DataIn.id + " " + classData.displayName + " found", true, 200));
-        } else {
-            console.log("" + classData.lower_name + " id " + DataIn.id + " does not exists");
-            res.status(404).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " Not found", false, 404));
-        }
     } catch (e) { // this will eventually be handled by your error handling middleware
         console.error(e);
-        res.status(404).send(tools.responseFormat(null, "Error Occurred " + e, false, 404));
+        res.status(400).send(tools.responseFormat(null, "Error Occurred " + e, false, 400));
     }
 };
 
@@ -106,10 +118,10 @@ const deleteitemroute = async(req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
-            res.status(404).send(tools.responseFormat(null, "database prefix is missing", false, 404));
+            res.status(400).send(tools.responseFormat(null, "database prefix is missing", false, 400));
         }
         if (jsonContent[req.params.name] === undefined) {
-            res.status(404).send(tools.responseFormat(null, "name is not found in config file", false, 404));
+            res.status(400).send(tools.responseFormat(null, "name is not found in config file", false, 400));
         }
         console.log("testing script results: " + DataIn.id);
         let classData = jsonContent[req.params.name];
@@ -131,11 +143,11 @@ const deleteitemroute = async(req, res) => {
         } else {
             console.error(result);
             console.log("" + classData.lower_name + " id " + DataIn.id + " does not exists and can't be deleted");
-            res.status(404).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " does not exists and can't be deleted", false, 404));
+            res.status(400).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " does not exists and can't be deleted", false, 400));
         }
     } catch (e) { // this will eventually be handled by your error handling middleware
         console.error(e);
-        res.status(404).send(tools.responseFormat(null, "Error Occurred " + e, false, 404));
+        res.status(400).send(tools.responseFormat(null, "Error Occurred " + e, false, 400));
     }
 };
 
@@ -143,10 +155,10 @@ const additemroute = async(req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
-            res.status(404).send(tools.responseFormat(null, "database prefix is missing", false, 404));
+            res.status(400).send(tools.responseFormat(null, "database prefix is missing", false, 400));
         }
         if (jsonContent[req.params.name] === undefined) {
-            res.status(404).send(tools.responseFormat(null, "name is not found in config file", false, 404));
+            res.status(400).send(tools.responseFormat(null, "name is not found in config file", false, 400));
         }
         let classData = jsonContent[req.params.name];
         let contract_name = DataIn.contract_name;
@@ -162,7 +174,6 @@ const additemroute = async(req, res) => {
         DataIn.id = id_variable;
         let configOBJ = DataIn.config_json;
         const multi_network = require("../network.js")(configOBJ);
-        let fname = contract_name;
         delete DataIn.folder_path;
         delete DataIn.contract_name;
         delete DataIn.config_json;
@@ -172,28 +183,47 @@ const additemroute = async(req, res) => {
         console.log("adding " + classData.lower_name + " id " + DataIn[classData.keyName] + " with following data " + JSON.stringify(DataIn) + "");
         let result;
         try {
-            result = await multi_network.createKeyValue(contract_name, classData.methods.creating, DataIn[classData.keyName], JSON.stringify(DataIn));
+            await multi_network.createKeyValue(contract_name, classData.methods.creating, DataIn[classData.keyName], JSON.stringify(DataIn))
+                .then(data => {
+                    if (!tools.checkBool(data)) {
+                        console.error(data);
+                        res.status(400).send(tools.responseFormat(data, DataIn.id + " " + classData.displayName + " was not added", false, 400));
+                    }
+                    result = data;
+                }).catch(err => {
+                    console.log(err);
+                    throw err;
+                });
         } catch (error) {
             throw error;
         }
+
         console.log("get results: " + result);
-        if (tools.checkBool(result)) {
-            console.log("" + classData.displayName + " " + DataIn[classData.keyName] + " was added");
-            const hresult = await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id);
-            console.log("testing return results: " + hresult);
-            console.log("get history " + classData.lower_name + " id " + DataIn.id + " history");
-            if (!tools.isEmpty(hresult)) {
-                res.send(tools.responseFormat(tools.bufferToString(hresult), DataIn.id + " " + classData.displayName + " was added", true, 200));
-            } else {
-                res.send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " was added", true, 200));
-            }
-        } else {
-            console.error(result);
-            res.status(404).send(tools.responseFormat(result, DataIn.id + " " + classData.displayName + " was not added", false, 404));
+        console.log("" + classData.displayName + " " + DataIn[classData.keyName] + " was added");
+        let hresult;
+        try {
+            await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id)
+                .then(response => response.json())
+                .then(data => {
+                    let js = tools.convertJSONString(data);
+                    if (!tools.isEmpty(js)) {
+                        let sb = new StringBuilder();
+                        js.data.toString().split(",").forEach(s => sb.append(String.fromCharCode(parseInt(s, 10))));
+                        hresult = sb.toString();
+                        console.log("testing return results: " + hresult);
+                        console.log("get history " + classData.lower_name + " id " + DataIn.id + " history");
+                    }
+                }).catch(err => {
+                    console.log(err);
+                });
+        } catch (error) {
+            console.log(err);
         }
+
+        res.send(tools.responseFormat(hresult, DataIn.id + " " + classData.displayName + " was added", true, 200));
     } catch (e) { // this will eventually be handled by your error handling middleware
         console.error(e);
-        res.status(404).send(tools.responseFormat(null, "Error Occurred " + e, false, 404));
+        res.status(400).send(tools.responseFormat(null, "Error Occurred " + e, false, 400));
     }
 };
 
@@ -201,10 +231,10 @@ const updateitemroute = async(req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
-            res.status(404).send(tools.responseFormat(null, "database prefix is missing", false, 404));
+            res.status(400).send(tools.responseFormat(null, "database prefix is missing", false, 400));
         }
         if (jsonContent[req.params.name] === undefined) {
-            res.status(404).send(tools.responseFormat(null, "name is not found in config file", false, 404));
+            res.status(400).send(tools.responseFormat(null, "name is not found in config file", false, 400));
         }
         let classData = jsonContent[req.params.name];
         let contract_name = DataIn.contract_name;
@@ -227,28 +257,47 @@ const updateitemroute = async(req, res) => {
         console.log("updating " + classData.lower_name + " id " + DataIn[classData.keyName] + " with following data " + JSON.stringify(DataIn) + "");
         let result;
         try {
-            result = await multi_network.updateKeyValue(contract_name, classData.methods.updating, DataIn[classData.keyName], JSON.stringify(DataIn));
+            await multi_network.updateKeyValue(contract_name, classData.methods.updating, DataIn[classData.keyName], JSON.stringify(DataIn))
+                .then(data => {
+                    if (!tools.checkBool(data)) {
+                        console.error(data);
+                        res.status(400).send(tools.responseFormat(data, DataIn.id + " " + classData.displayName + " was not updated", false, 400));
+                    }
+                    result = data;
+                }).catch(err => {
+                    console.error(err);
+                    throw err;
+                });
         } catch (error) {
             throw error;
         }
+
         console.log("get results: " + result);
-        if (tools.checkBool(result)) {
-            console.log("" + classData.displayName + " " + DataIn[classData.keyName] + " was updated");
-            const hresult = await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id);
-            console.log("testing return results: " + hresult);
-            console.log("get history " + classData.lower_name + " id " + DataIn.id + " history");
-            if (!tools.isEmpty(hresult)) {
-                res.send(tools.responseFormat(tools.bufferToString(hresult), DataIn.id + " " + classData.displayName + " was updated", true, 200));
-            } else {
-                res.send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " was updated", true, 200));
-            }
-        } else {
-            console.error(result);
-            res.status(404).send(tools.responseFormat(null, classData.displayName + " was not updated", false, 404));
+        console.log("" + classData.displayName + " " + DataIn[classData.keyName] + " was added");
+        let hresult;
+        try {
+            await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id)
+                .then(response => response.json())
+                .then(data => {
+                    let js = tools.convertJSONString(data);
+                    if (!tools.isEmpty(js)) {
+                        console.log("testing return results: " + js);
+                        console.log("get history " + classData.lower_name + " id " + DataIn.id + " history");
+                        let sb = new StringBuilder();
+                        js.data.toString().split(",").forEach(s => sb.append(String.fromCharCode(parseInt(s, 10))));
+                        hresult = sb.toString();
+                    }
+                }).catch(err => {
+                    console.log(err);
+                });
+        } catch (error) {
+            console.log(err);
         }
+
+        res.send(tools.responseFormat(hresult, DataIn.id + " " + classData.displayName + " was updated", true, 200));
     } catch (e) { // this will eventually be handled by your error handling middleware
         console.error(e);
-        res.status(404).send(tools.responseFormat(null, "Error Occurred " + e, false, 404));
+        res.status(400).send(tools.responseFormat(null, "Error Occurred " + e, false, 400));
     }
 };
 
@@ -256,10 +305,10 @@ const getHistoryroute = async(req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
-            res.status(404).send(tools.responseFormat(null, "database prefix is missing", false, 404));
+            res.status(400).send(tools.responseFormat(null, "database prefix is missing", false, 400));
         }
         if (jsonContent[req.params.name] === undefined) {
-            res.status(404).send(tools.responseFormat(null, "name is not found in config file", false, 404));
+            res.status(400).send(tools.responseFormat(null, "name is not found in config file", false, 400));
         }
         let classData = jsonContent[req.params.name];
         let contract_name = DataIn.contract_name;
@@ -269,39 +318,47 @@ const getHistoryroute = async(req, res) => {
         console.log("getting " + classData.lower_name + " history " + DataIn.id + "");
         let result;
         try {
-            result = await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id);
+            await await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id)
+                .then(response => response.json())
+                .then(data => {
+                    let js = tools.convertJSONString(data);
+                    if (tools.isEmpty(js)) {
+                        console.error(DataIn.id + " " + classData.displayName + " not exists or no history available");
+                        res.status(400).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " not exists or no history available", false, 400));
+                    }
+                    console.log("testing return results: " + js);
+                    console.log("get " + classData.lower_name + " id " + DataIn.id + " history");
+                    console.log("testing script results: " + js);
+                    let sb = new StringBuilder();
+                    js.data.toString().split(",").forEach(s => sb.append(String.fromCharCode(parseInt(s, 10))));
+                    let sbjs = sb.toString();
+                    console.log("full string " + sbjs);
+                    result = tools.stringToJsonTimestamp(sbjs);
+                }).catch(err => {
+                    console.error(err);
+                    throw err;
+                });
         } catch (error) {
             throw error;
         }
-        console.log("testing return results: " + result);
-        console.log("get " + classData.lower_name + " id " + DataIn.id + " history");
-        console.log("testing script results: " + result);
-        if (tools.isEmpty(result)) {
-            console.error(DataIn.id + " " + classData.displayName + " not exists or no history available");
-            res.status(404).send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " not exists or no history available", false, 404));
-        } else {
-            let jsonArray = [];
-            let changed = tools.bufferToString(result);
-            console.log("full string " + changed);
-            let arr = tools.stringToJson(changed);
-            arr = arr.filter(obj => Object.keys(obj).includes("Timestamp"));
-            if (arr.length > 0) {
-                arr.forEach(function(element) {
-                    if ("seconds" in element.Timestamp) {
-                        const dt = new Date(parseInt(element.Timestamp.seconds.low) * 1000);
-                        element.datetime = dt.toISOString();
-                        element.formatted_datetime = dateFormat(dt.toISOString(), "yyyy-mm-dd h:MM:ss TT");
-                        jsonArray.push(element);
-                    }
-                });
-            }
 
-            console.log(JSON.stringify(jsonArray));
-            res.send(tools.responseFormat(jsonArray, "", true, 200));
+        let jsonArray = [];
+        if (result.length > 0) {
+            result.forEach(function(element) {
+                if ("seconds" in element.Timestamp) {
+                    const dt = new Date(parseInt(element.Timestamp.seconds.low) * 1000);
+                    element.datetime = dt.toISOString();
+                    element.formatted_datetime = dateFormat(dt.toISOString(), "yyyy-mm-dd h:MM:ss TT");
+                    jsonArray.push(element);
+                }
+            });
         }
+
+        console.log(JSON.stringify(jsonArray));
+        res.send(tools.responseFormat(jsonArray, "", true, 200));
     } catch (e) { // this will eventually be handled by your error handling middleware
         console.error(e);
-        res.status(404).send(tools.responseFormat(null, "Error Occurred " + e, false, 404));
+        res.status(400).send(tools.responseFormat(null, "Error Occurred " + e, false, 400));
     }
 };
 
@@ -326,7 +383,7 @@ const getRangeroute = async(req, res) => {
         console.log("testing script results: " + result);
         if (tools.isEmpty(result)) {
             console.error("" + classData.displayName + "  range from " + range_from + " to " + range_to + " does not exists");
-            res.status(404).send(tools.responseFormat(null, classData.displayName + "  range from " + range_from + " to " + range_to + " does not exists", false, 404));
+            res.status(400).send(tools.responseFormat(null, classData.displayName + "  range from " + range_from + " to " + range_to + " does not exists", false, 400));
         } else {
             console.log(JSON.stringify(result));
             res.send(tools.responseFormat(result, "", true, 200));
@@ -334,7 +391,7 @@ const getRangeroute = async(req, res) => {
 
     } catch (e) { // this will eventually be handled by your error handling middleware
         console.error(e);
-        res.status(404).send(tools.responseFormat(null, "Error Occurred " + e, false, 404));
+        res.status(400).send(tools.responseFormat(null, "Error Occurred " + e, false, 400));
     }
 };
 
@@ -342,17 +399,17 @@ const getQueryroute = async(req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
-            res.status(404).send(tools.responseFormat(null, "database prefix is missing", false, 404));
+            res.status(400).send(tools.responseFormat(null, "database prefix is missing", false, 400));
         }
         if (jsonContent[req.params.name] === undefined) {
-            res.status(404).send(tools.responseFormat(null, "name is not found in config file", false, 404));
+            res.status(400).send(tools.responseFormat(null, "name is not found in config file", false, 400));
         }
 
         let classData = jsonContent[req.params.name];
 
         if (!("query_string" in DataIn)) {
             console.error("" + classData.displayName + "  querystring does not exists");
-            res.status(404).send(tools.responseFormat(null, "The query string does not exists", false, 404));
+            res.status(400).send(tools.responseFormat(null, "The query string does not exists", false, 400));
         }
 
         let contract_name = DataIn.contract_name;
@@ -370,7 +427,7 @@ const getQueryroute = async(req, res) => {
         console.log("received results: " + result);
         if (tools.isEmpty(result)) {
             console.error("" + classData.displayName + "  query result empty");
-            res.status(404).send(tools.responseFormat(null, classData.displayName + " query returned no result", false, 404));
+            res.status(400).send(tools.responseFormat(null, classData.displayName + " query returned no result", false, 400));
         } else {
             let jsonArray = [];
             const jsarr = JSON.parse(result);
@@ -385,7 +442,7 @@ const getQueryroute = async(req, res) => {
 
     } catch (e) { // this will eventually be handled by your error handling middleware
         console.error(e);
-        res.status(404).send(tools.responseFormat(null, "Error Occurred " + e, false, 404));
+        res.status(400).send(tools.responseFormat(null, "Error Occurred " + e, false, 400));
     }
 };
 
