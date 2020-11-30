@@ -318,7 +318,7 @@ const getHistoryroute = async(req, res) => {
         console.log("getting " + classData.lower_name + " history " + DataIn.id + "");
         let result;
         try {
-            await await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id)
+            await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id)
                 .then(response => response.json())
                 .then(data => {
                     let js = tools.convertJSONString(data);
