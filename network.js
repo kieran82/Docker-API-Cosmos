@@ -43,7 +43,7 @@ module.exports = function(configOBJ) {
                 const contract = network.getContract(contractName);
 
                 // Submit the specified transaction.
-                const retVal = await contract.submitTransaction(func, keyID);
+                const retVal = await contract.evaluateTransaction(func, keyID);
                 console.log(`Return value is ${retVal}`);
                 let val = Boolean(retVal);
                 // Disconnect from the gateway.
@@ -249,7 +249,7 @@ module.exports = function(configOBJ) {
                 const contract = network.getContract(contractName);
 
                 // Submit the specified transaction.
-                const result = await contract.submitTransaction(func, keyID);
+                const result = await contract.evaluateTransaction(func, keyID);
                 // console.log(`Transaction has been submitted:\n ${result}`);
 
                 // Disconnect from the gateway.
@@ -290,7 +290,7 @@ module.exports = function(configOBJ) {
                 const contract = network.getContract(contractName);
 
                 // Submit the specified transaction.
-                const result = await contract.submitTransaction(func, startId, endId);
+                const result = await contract.evaluateTransaction(func, startId, endId);
 
                 // Disconnect from the gateway.
                 await gateway.disconnect();
@@ -330,7 +330,7 @@ module.exports = function(configOBJ) {
                 const contract = network.getContract(contractName);
 
                 // Submit the specified transaction.
-                const result = await contract.submitTransaction(func, query);
+                const result = await contract.evaluateTransaction(func, query);
 
                 // Disconnect from the gateway.
                 await gateway.disconnect();
