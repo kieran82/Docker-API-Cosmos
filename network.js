@@ -43,12 +43,17 @@ module.exports = function(configOBJ) {
                 const contract = network.getContract(contractName);
 
                 // Submit the specified transaction.
-                const retVal = await contract.submitTransaction(func, keyID);
+                const retVal = await contract.evaluateTransaction(func, keyID);
                 console.log(`Return value is ${retVal}`);
-                let val = Boolean(retVal);
+                let value;
+                if (retVal === false || retVal === true || retVal instanceof Boolean) {
+                    value = retVal;
+                } else {
+                    value = tools.toBoolean(retVal);
+                }
                 // Disconnect from the gateway.
                 await gateway.disconnect();
-                return tools.toBoolean(val);
+                return value;
             } catch (error) {
                 throw error;
             }
