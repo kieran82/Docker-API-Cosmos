@@ -203,7 +203,6 @@ const additemroute = async(req, res) => {
         let hresult;
         try {
             await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id)
-                .then(response => response.json())
                 .then(data => {
                     let js = tools.convertJSONString(data);
                     if (!tools.isEmpty(js)) {
@@ -277,7 +276,6 @@ const updateitemroute = async(req, res) => {
         let hresult;
         try {
             await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id)
-                .then(response => response.json())
                 .then(data => {
                     let js = tools.convertJSONString(data);
                     if (!tools.isEmpty(js)) {
@@ -319,7 +317,6 @@ const getHistoryroute = async(req, res) => {
         let result;
         try {
             await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id)
-                .then(response => response.json())
                 .then(data => {
                     let js = tools.convertJSONString(data);
                     if (tools.isEmpty(js)) {
