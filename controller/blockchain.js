@@ -9,7 +9,7 @@ let current_path_location = jsoncontents.work_path;
 let contents = fs.readFileSync(current_path_location + "json/blockchain_config.json");
 let jsonContent = JSON.parse(contents);
 let cdirectory = __dirname;
-let logpath = process.env.LOGPATH;
+let logpath = process.env.LOGFILEPATH;
 log4js.configure({
     appenders: {
         BlockchainFile: { type: 'file', filename: logpath, maxLogSize: 4194304, backups: 10, keepFileExt: true, compress: true, daysToKeep: 20 }

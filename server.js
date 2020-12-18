@@ -9,7 +9,7 @@ app.use('/api/get', require('./routes/getting'));
 app.use('/api/check', require('./routes/checking'));
 console.log("Starting the Verifish web api");
 
-var server = app.listen(8080, function() {
+var server = app.listen(5000, function() {
     var host = server.address().address;
     var port = server.address().port;
 
