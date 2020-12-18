@@ -1,5 +1,5 @@
 FROM node:10
-EXPOSE 8080
+EXPOSE 5000
 # install dependencies
 WORKDIR /node_api
 COPY package.json package-lock.json* ./
