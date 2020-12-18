@@ -10,6 +10,8 @@ services:
       LOGFILEPATH: /node_api/logs/VERIFISH-API-Message.log
       CONFIGSTRING: https://4228c58e-0ee0-4-231-b9ee.documents.azure.com:443/
       CONFIGKEY: 4i8Xmwm2h1o7tykmCSlIRus2gwo7Luiif17N3SnbZW8efTJuKCkTUn5QBs8QZ2KQ8BBpdFWtvn7yAMD6OCUTGg==
+    ports:
+     - 8080:8080  
     volumes:
       - .:/node_api
       - ./logs:/node_api/logs
