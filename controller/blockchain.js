@@ -86,7 +86,6 @@ const getitemroute = async(req, res) => {
         let result;
         try {
             await multi_network.readKeyValue(contract_name, classData.methods.reading, DataIn.id)
-                .then(response => response.json())
                 .then(data => {
                     data = tools.convertJSONString(data);
                     if (tools.isEmpty(data)) {
