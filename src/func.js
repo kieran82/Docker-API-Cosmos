@@ -149,7 +149,7 @@ module.exports = {
         if (typeof input == "boolean") {
             return input;
         } else if (typeof input === 'object' &&
-            bool !== null &&
+            input !== null &&
             typeof input.valueOf() === 'boolean') {
             return input;
         } else if (typeof input == "string") {

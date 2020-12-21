@@ -173,31 +173,32 @@ const additemroute = async(req, res) => {
         DataIn.id = id_variable;
         let configOBJ = DataIn.config_json;
         const multi_network = require("../network.js")(configOBJ);
-        let fname = contract_name;
         delete DataIn.folder_path;
         delete DataIn.contract_name;
         delete DataIn.config_json;
-        DataIn[classData.keyName]
-        logger.info("" + classData.lower_name + " id results: " + DataIn[classData.keyName]);
+
+        logger.info("" + classData.lower_name + " id results: " + DataIn.id);
         logger.info("received results: " + JSON.stringify(DataIn));
-        logger.info("adding " + classData.lower_name + " id " + DataIn[classData.keyName] + " with following data " + JSON.stringify(DataIn) + "");
+        logger.info("adding " + classData.lower_name + " id " + DataIn.id + " with following data " + JSON.stringify(DataIn) + "");
         let result;
         try {
-            result = await multi_network.createKeyValue(contract_name, classData.methods.creating, DataIn[classData.keyName], JSON.stringify(DataIn));
+            result = await multi_network.createKeyValue(contract_name, classData.methods.creating, DataIn.id, JSON.stringify(DataIn));
         } catch (error) {
             throw error;
         }
         logger.info("get results: " + result);
         if (tools.checkBool(result)) {
-            logger.info("" + classData.displayName + " " + DataIn[classData.keyName] + " was added");
-            const hresult = await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id);
-            logger.info("testing return results: " + hresult);
+            logger.info("" + classData.displayName + " " + DataIn.id + " was added");
             logger.info("get history " + classData.lower_name + " id " + DataIn.id + " history");
-            if (!tools.isEmpty(hresult)) {
-                res.send(tools.responseFormat(tools.bufferToString(hresult), DataIn.id + " " + classData.displayName + " was added", true, 200));
-            } else {
-                res.send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " was added", true, 200));
+            let history = null;
+            try {
+                history = await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id);
+                logger.info("testing return results: " + history);
+                history = tools.bufferToString(history);
+            } catch (error) {
+                logger.error(error);
             }
+            res.send(tools.responseFormat(history, DataIn.id + " " + classData.displayName + " was added", true, 200));
         } else {
             logger.error(result);
             res.status(400).send(tools.responseFormat(result, DataIn.id + " " + classData.displayName + " was not added", false, 400));
@@ -245,14 +246,17 @@ const updateitemroute = async(req, res) => {
         logger.info("get results: " + result);
         if (tools.checkBool(result)) {
             logger.info("" + classData.displayName + " " + DataIn[classData.keyName] + " was updated");
-            const hresult = await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id);
-            logger.info("testing return results: " + hresult);
-            logger.info("get history " + classData.lower_name + " id " + DataIn.id + " history");
-            if (!tools.isEmpty(hresult)) {
-                res.send(tools.responseFormat(tools.bufferToString(hresult), DataIn.id + " " + classData.displayName + " was updated", true, 200));
-            } else {
-                res.send(tools.responseFormat(null, DataIn.id + " " + classData.displayName + " was updated", true, 200));
+            let history = null;
+            try {
+                history = await multi_network.getHistoryForKey(contract_name, classData.methods.get_history, DataIn.id);
+                logger.info("testing return results: " + history);
+                history = tools.bufferToString(history);
+            } catch (error) {
+                logger.error(error);
             }
+
+            logger.info("get history " + classData.lower_name + " id " + DataIn.id + " history");
+            res.send(tools.responseFormat(history, DataIn.id + " " + classData.displayName + " was updated", true, 200));
         } else {
             logger.error(result);
             res.status(400).send(tools.responseFormat(null, classData.displayName + " was not updated", false, 400));
