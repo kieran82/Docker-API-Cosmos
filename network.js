@@ -1,5 +1,16 @@
 "use strict";
 const tools = require("./src/func");
+const log4js = require('log4js');
+let logpath = process.env.LOGFILEPATH;
+log4js.configure({
+    appenders: {
+        BlockchainFile: { type: 'file', filename: logpath, maxLogSize: 4194304, backups: 10, keepFileExt: true, compress: true, daysToKeep: 20 }
+    },
+    categories: {
+        default: { appenders: ['BlockchainFile'], level: 'trace' }
+    }
+});
+const logger = log4js.getLogger('BlockchainFile');
 const { FileSystemWallet, Gateway } = require("fabric-network");
 module.exports = function(configOBJ) {
     var module = {};
@@ -12,7 +23,7 @@ module.exports = function(configOBJ) {
     const getWallet = () => {
         const walletPath = configOBJ.wallet_path;
         const wallet = new FileSystemWallet(walletPath);
-        console.log(`Wallet path: ${walletPath}`);
+        logger.info(`Wallet path: ${walletPath}`);
         return wallet;
     };
 
@@ -21,11 +32,11 @@ module.exports = function(configOBJ) {
             const wallet = getWallet();
             const exists = await wallet.exists(userName);
 
-            console.log(`This is the key ID ${keyID}`);
-            console.log(`This is the contract being used ${contractName}`);
+            logger.info(`This is the key ID ${keyID}`);
+            logger.info(`This is the contract being used ${contractName}`);
 
             if (!exists) {
-                console.log(
+                logger.info(
                     `An identity for the user ${userName} does not exist in the wallet`
                 );
                 throw new "An identity for the user ${userName} does not exist in the wallet";
@@ -44,16 +55,11 @@ module.exports = function(configOBJ) {
 
                 // Submit the specified transaction.
                 const retVal = await contract.evaluateTransaction(func, keyID);
-                console.log(`Return value is ${retVal}`);
-                let value;
-                if (retVal === false || retVal === true || retVal instanceof Boolean) {
-                    value = retVal;
-                } else {
-                    value = tools.toBoolean(retVal);
-                }
+                logger.info(`Return value is ${retVal}`);
+                logger.info(`Boolean value is ${Boolean(retVal)}`);
                 // Disconnect from the gateway.
                 await gateway.disconnect();
-                return value;
+                return Boolean(retVal);
             } catch (error) {
                 throw error;
             }
@@ -68,10 +74,10 @@ module.exports = function(configOBJ) {
             const wallet = getWallet();
             const exists = await wallet.exists(userName);
 
-            console.log(`This is the Key ID ${keyID}`);
+            logger.info(`This is the Key ID ${keyID}`);
 
             if (!exists) {
-                console.log(
+                logger.info(
                     `An identity for the user ${userName} does not exist in the wallet`
                 );
                 throw new "An identity for the user ${userName} does not exist in the wallet";
@@ -91,7 +97,7 @@ module.exports = function(configOBJ) {
 
                 // Submit the specified transaction.
                 await contract.submitTransaction(func, keyID, value);
-                console.log(`Transaction has been submitted`);
+                logger.info(`Transaction has been submitted`);
 
                 // Disconnect from the gateway.
                 await gateway.disconnect();
@@ -110,10 +116,10 @@ module.exports = function(configOBJ) {
             const wallet = getWallet();
             const exists = await wallet.exists(userName);
 
-            console.log(`This is the Key ID ${keyID}`);
+            logger.info(`This is the Key ID ${keyID}`);
 
             if (!exists) {
-                console.log(
+                logger.info(
                     `An identity for the user ${userName} does not exist in the wallet`
                 );
                 throw new "An identity for the user ${userName} does not exist in the wallet";
@@ -133,7 +139,7 @@ module.exports = function(configOBJ) {
 
                 // Submit the specified transaction.
                 await contract.submitTransaction(func, keyID, value);
-                console.log(`Transaction has been submitted`);
+                logger.info(`Transaction has been submitted`);
 
                 // Disconnect from the gateway.
                 await gateway.disconnect();
@@ -152,10 +158,10 @@ module.exports = function(configOBJ) {
             const wallet = getWallet();
             const exists = await wallet.exists(userName);
 
-            console.log(`This is the Key ID ${keyID}`);
+            logger.info(`This is the Key ID ${keyID}`);
 
             if (!exists) {
-                console.log(
+                logger.info(
                     `An identity for the user ${userName} does not exist in the wallet`
                 );
                 throw new "An identity for the user ${userName} does not exist in the wallet";
@@ -175,7 +181,7 @@ module.exports = function(configOBJ) {
 
                 // Submit the specified transaction.
                 const result = await contract.evaluateTransaction(func, keyID);
-                console.log(`Transaction has been submitted:\n ${result}`);
+                logger.info(`Transaction has been submitted:\n ${result}`);
 
                 // Disconnect from the gateway.
                 await gateway.disconnect();
@@ -195,7 +201,7 @@ module.exports = function(configOBJ) {
             const exists = await wallet.exists(userName);
 
             if (!exists) {
-                console.log(
+                logger.info(
                     `An identity for the user ${userName} does not exist in the wallet`
                 );
                 throw new "An identity for the user ${userName} does not exist in the wallet";
@@ -215,7 +221,7 @@ module.exports = function(configOBJ) {
 
                 // Submit the specified transaction.
                 await contract.submitTransaction(func, keyID);
-                console.log(`Item key ${keyID} has been deleted`);
+                logger.info(`Item key ${keyID} has been deleted`);
 
                 // Disconnect from the gateway.
                 await gateway.disconnect();
@@ -235,7 +241,7 @@ module.exports = function(configOBJ) {
             const exists = await wallet.exists(userName);
 
             if (!exists) {
-                console.log(
+                logger.info(
                     `An identity for the user ${userName} does not exist in the wallet`
                 );
                 throw new "An identity for the user ${userName} does not exist in the wallet";
@@ -255,7 +261,7 @@ module.exports = function(configOBJ) {
 
                 // Submit the specified transaction.
                 const result = await contract.submitTransaction(func, keyID);
-                // console.log(`Transaction has been submitted:\n ${result}`);
+                // logger.info(`Transaction has been submitted:\n ${result}`);
 
                 // Disconnect from the gateway.
                 await gateway.disconnect();
@@ -276,7 +282,7 @@ module.exports = function(configOBJ) {
             const exists = await wallet.exists(userName);
 
             if (!exists) {
-                console.log(
+                logger.info(
                     `An identity for the user ${userName} does not exist in the wallet`
                 );
                 throw new "An identity for the user ${userName} does not exist in the wallet";
@@ -316,7 +322,7 @@ module.exports = function(configOBJ) {
             const exists = await wallet.exists(userName);
 
             if (!exists) {
-                console.log(
+                logger.info(
                     `An identity for the user ${userName} does not exist in the wallet`
                 );
                 throw new "An identity for the user ${userName} does not exist in the wallet";

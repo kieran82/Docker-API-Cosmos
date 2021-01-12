@@ -49,7 +49,7 @@ module.exports = {
             let jsonmatches = stringVal.match(/\{.*?\}/g);
             if (jsonmatches.length > 0) {
                 jsonmatches.forEach(function(element) {
-                    if (tools.IsJsonString(element)) {
+                    if (module.exports.IsJsonString(element)) {
                         arr = arr.concat(JSON.parse(element));
                     }
                 });
@@ -73,7 +73,7 @@ module.exports = {
             let jsonmatches = stringVal.match(/\{.*?\}/g);
             if (jsonmatches.length > 0) {
                 jsonmatches.forEach(function(element) {
-                    if (tools.IsJsonString(element)) {
+                    if (module.exports.IsJsonString(element)) {
                         arr = arr.concat(JSON.parse(element));
                     }
                 });

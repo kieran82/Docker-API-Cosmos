@@ -124,7 +124,7 @@ const deleteitemroute = async(req, res) => {
         }
         logger.info("testing script results: " + DataIn.id);
         let classData = jsonContent[req.params.name];
-        ataIn.id = !("id" in DataIn) ? DataIn[classData.keyName] : DataIn.id;
+        DataIn.id = !("id" in DataIn) ? DataIn[classData.keyName] : DataIn.id;
         let contract_name = DataIn.contract_name;
         let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
         const multi_network = require(current_path_location + "network.js")(configOBJ);
