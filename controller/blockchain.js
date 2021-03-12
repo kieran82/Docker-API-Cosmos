@@ -3,19 +3,36 @@ const asyncRoute = require("route-async");
 const fs = require("fs");
 const util = require("util");
 const log4js = require('log4js');
-let scontents = fs.readFileSync("site_config.json");
-let jsoncontents = JSON.parse(scontents);
-let current_path_location = jsoncontents.work_path;
-let contents = fs.readFileSync(current_path_location + "json/blockchain_config.json");
+const path = require('path');
+
+// const sContents = fs.readFileSync("site_config.json");
+// const jsonContents = JSON.parse(sContents);
+let current_path_location = process.cwd(); //jsonContents.work_path;  // "/node_api/"
+const configPath = path.join(current_path_location, "json", "blockchain_config.json");
+let contents = fs.readFileSync(configPath);
+console.log(configPath);
+
 let jsonContent = JSON.parse(contents);
+
 let cdirectory = __dirname;
-let logpath = process.env.LOGFILEPATH;
+let logpath = "logs/VERIFISH-API-Message.log"; //process.env.LOGFILEPATH;
 log4js.configure({
     appenders: {
-        BlockchainFile: { type: 'file', filename: logpath, maxLogSize: 4194304, backups: 10, keepFileExt: true, compress: true, daysToKeep: 20 }
+        BlockchainFile: {
+            type: 'file',
+            filename: logpath,
+            maxLogSize: 4194304,
+            backups: 10,
+            keepFileExt: true,
+            compress: true,
+            daysToKeep: 20
+        }
     },
     categories: {
-        default: { appenders: ['BlockchainFile'], level: 'trace' }
+        default: {
+            appenders: ['BlockchainFile'],
+            level: 'trace'
+        }
     }
 });
 const logger = log4js.getLogger('BlockchainFile');
@@ -23,7 +40,7 @@ console.log("cdirectory = " + cdirectory);
 console.log("cdirectory1 = " + __dirname);
 console.log("cwd = " + process.cwd());
 
-const checkroute = async(req, res) => {
+const checkroute = async (req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
@@ -45,7 +62,7 @@ const checkroute = async(req, res) => {
             depth: null
         }));
         DataIn.id = !("id" in DataIn) ? DataIn[classData.keyName] : DataIn.id;
-        const multi_network = require("../network.js")(configOBJ);
+        const multi_network = require("../network")(configOBJ);
         let result;
         try {
             result = await multi_network.keyExists(contract_name, classData.methods.checkExists, DataIn.id);
@@ -73,7 +90,7 @@ const checkroute = async(req, res) => {
     }
 };
 
-const getitemroute = async(req, res) => {
+const getitemroute = async (req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
@@ -87,7 +104,8 @@ const getitemroute = async(req, res) => {
         DataIn.id = !("id" in DataIn) ? DataIn[classData.keyName] : DataIn.id;
         let contract_name = DataIn.contract_name;
         let configOBJ = DataIn.config_json;
-        const multi_network = require(current_path_location + "network.js")(configOBJ);
+
+        const multi_network = require('../network')(configOBJ);
         let result;
         try {
             result = await multi_network.readKeyValue(contract_name, classData.methods.reading, DataIn.id);
@@ -113,7 +131,7 @@ const getitemroute = async(req, res) => {
     }
 };
 
-const deleteitemroute = async(req, res) => {
+const deleteitemroute = async (req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
@@ -127,7 +145,7 @@ const deleteitemroute = async(req, res) => {
         DataIn.id = !("id" in DataIn) ? DataIn[classData.keyName] : DataIn.id;
         let contract_name = DataIn.contract_name;
         let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
-        const multi_network = require(current_path_location + "network.js")(configOBJ);
+        const multi_network = require("../network")(configOBJ);
         let result;
         try {
             result = await multi_network.deleteKeyValue(contract_name, classData.methods.reading, DataIn.id);
@@ -150,7 +168,7 @@ const deleteitemroute = async(req, res) => {
     }
 };
 
-const additemroute = async(req, res) => {
+const additemroute = async (req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
@@ -172,7 +190,7 @@ const additemroute = async(req, res) => {
         }
         DataIn.id = id_variable;
         let configOBJ = DataIn.config_json;
-        const multi_network = require("../network.js")(configOBJ);
+        const multi_network = require("../network")(configOBJ);
         delete DataIn.folder_path;
         delete DataIn.contract_name;
         delete DataIn.config_json;
@@ -209,7 +227,7 @@ const additemroute = async(req, res) => {
     }
 };
 
-const updateitemroute = async(req, res) => {
+const updateitemroute = async (req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
@@ -230,7 +248,7 @@ const updateitemroute = async(req, res) => {
         }
         DataIn.id = id_variable;
         let configOBJ = DataIn.config_json;
-        const multi_network = require("../network.js")(configOBJ);
+        const multi_network = require("../network")(configOBJ);
         delete DataIn.folder_path;
         delete DataIn.contract_name;
         delete DataIn.config_json;
@@ -267,7 +285,7 @@ const updateitemroute = async(req, res) => {
     }
 };
 
-const getHistoryroute = async(req, res) => {
+const getHistoryroute = async (req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
@@ -279,7 +297,7 @@ const getHistoryroute = async(req, res) => {
         let classData = jsonContent[req.params.name];
         let contract_name = DataIn.contract_name;
         let configOBJ = DataIn.config_json;
-        const multi_network = require("../network.js")(configOBJ);
+        const multi_network = require("../network")(configOBJ);
         logger.info("" + classData.lower_name + " id results: " + DataIn.id);
         logger.info("getting " + classData.lower_name + " history " + DataIn.id + "");
         let result;
@@ -301,7 +319,7 @@ const getHistoryroute = async(req, res) => {
             let arr = tools.stringToJson(changed);
             arr = arr.filter(obj => Object.keys(obj).includes("Timestamp"));
             if (arr.length > 0) {
-                arr.forEach(function(element) {
+                arr.forEach(function (element) {
                     if ("seconds" in element.Timestamp) {
                         const dt = new Date(parseInt(element.Timestamp.seconds.low) * 1000);
                         element.datetime = dt.toISOString();
@@ -320,7 +338,7 @@ const getHistoryroute = async(req, res) => {
     }
 };
 
-const getRangeroute = async(req, res) => {
+const getRangeroute = async (req, res) => {
     try {
         let DataIn = req.body;
         let classData = jsonContent[req.params.name];
@@ -328,7 +346,7 @@ const getRangeroute = async(req, res) => {
         let range_from = DataIn.range_from;
         let range_to = DataIn.range_to;
         let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
-        const multi_network = require("../network.js")(configOBJ);
+        const multi_network = require("../network")(configOBJ);
         logger.info("" + classData.displayName + " id : " + DataIn.id);
         logger.info("check " + classData.displayName + " for a range of ids from " + range_from + " to " + range_to + "");
         let result;
@@ -353,7 +371,7 @@ const getRangeroute = async(req, res) => {
     }
 };
 
-const getQueryroute = async(req, res) => {
+const getQueryroute = async (req, res) => {
     try {
         let DataIn = req.body;
         if (!("folder_path" in DataIn)) {
@@ -372,7 +390,7 @@ const getQueryroute = async(req, res) => {
 
         let contract_name = DataIn.contract_name;
         let configOBJ = tools.configFile(current_path_location, DataIn.folder_path);
-        const multi_network = require("../network.js")(configOBJ);
+        const multi_network = require("../network")(configOBJ);
         logger.info("check " + classData.displayName + "  with queryString with query:" + DataIn.query_string + "");
         logger.info("" + classData.displayName + " query results: " + DataIn.query_string);
         let result;
@@ -390,7 +408,7 @@ const getQueryroute = async(req, res) => {
             let jsonArray = [];
             const jsarr = JSON.parse(result);
             logger.info(`received json results: ${jsarr}`);
-            jsarr.forEach(function(element) {
+            jsarr.forEach(function (element) {
                 let Valuestr = element.Value;
                 jsonArray.push(Valuestr);
             });

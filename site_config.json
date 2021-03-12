@@ -1,8 +1,8 @@
 {
-	"couchdb_path": "http://verifishadmin:marineRubicon19!@127.0.0.1:5984",
-    "work_path": "/node_api/",
-    "log_path": "/home/LogFiles/logs",
-    "log_file_path": "/home/LogFiles/VERIFISH-API-Message.log",
-    "config_url" : "https://verifish-cosmos.documents.azure.com:443/",
-	"config_key": "rwK7XcAYHhQ7n0i5HmUM8fZUtOExmgMRpYPSZ6tJWWAYRR2R8lR1Ri3HYzh8foIzSbcJUev2YDzSkUnZ3UiO1w=="
+  "couchdb_path": "http://verifishadmin:marineRubicon19!@127.0.0.1:5984",
+  "work_path": "/node_api/",
+  "log_path": "/logs",
+  "log_file_path": "/logs/VERIFISH-API-Message.log",
+  "config_url": "https://verifish-cosmos.documents.azure.com:443/",
+  "config_key": "rwK7XcAYHhQ7n0i5HmUM8fZUtOExmgMRpYPSZ6tJWWAYRR2R8lR1Ri3HYzh8foIzSbcJUev2YDzSkUnZ3UiO1w=="
 }

@@ -4,13 +4,21 @@ const asyncRoute = require("route-async");
 const fs = require("fs");
 const util = require("util");
 const TaskDao = require("../models/taskDao");
-let scontents = fs.readFileSync("site_config.json");
-let jsoncontents = JSON.parse(scontents);
-let current_path_location = jsoncontents.work_path;
+const path = require('path');
+const sContentPath = path.join(process.cwd(), "site_config.json");
+
+let sContents = fs.readFileSync(sContentPath);
+let jsoncontents = JSON.parse(sContents);
+// let current_path_location = jsoncontents.work_path;
 let cosmos_config = jsoncontents.config_url;
 let cosmos_key = jsoncontents.config_key;
-let contents = fs.readFileSync(current_path_location + "json/blockchain_config.json");
+const configPath = path.join(process.cwd(), "json", "blockchain_config.json");
+console.log(configPath);
+
+let contents = fs.readFileSync(configPath);
+
 let jsonContent = JSON.parse(contents);
+
 const checkroute = async (req, res) => {
     try {
         let DataIn = req.body;
@@ -298,7 +306,7 @@ const updateitemroute = async (req, res) => {
 const getQueryroute = async (req, res) => {
     try {
         let DataIn = req.body;
-        
+
         const classData = jsonContent[req.params.name];
         const primaryKey = classData.primaryKey;
         const databaseId = classData.database_name;
@@ -318,9 +326,8 @@ const getQueryroute = async (req, res) => {
         };
 
         let obj = DataIn.query_string;
-        if(tools.IsJsonString(DataIn.query_string))
-        {
-           obj = JSON.parse(DataIn.query_string);
+        if (tools.IsJsonString(DataIn.query_string)) {
+            obj = JSON.parse(DataIn.query_string);
         }
         console.log("queryString " + classData.lower_name + " is " + JSON.stringify(obj) + "");
 

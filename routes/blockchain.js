@@ -1,5 +1,5 @@
 const router = require('express').Router();
-var myController = require('../controller/blockchain.js');
+const myController = require('../controller/blockchain.js');
 //Check Item Exists
 router.post('/:name/exists', myController.checkExists);
 //Get Item
@@ -16,4 +16,5 @@ router.post('/:name/get_history', myController.getHistory);
 router.post('/:name/get_range', myController.getRange);
 //Get Query Result
 router.post('/:name/get_query', myController.getQueryResult);
+
 module.exports = router;

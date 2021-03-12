@@ -1,18 +1,34 @@
 "use strict";
-const tools = require("./src/func");
+// const tools = require("./src/func");
 const log4js = require('log4js');
-let logpath = process.env.LOGFILEPATH;
+let logpath = 'logs/VERIFISH-API-Message.log'; //process.env.LOGFILEPATH;
 log4js.configure({
     appenders: {
-        BlockchainFile: { type: 'file', filename: logpath, maxLogSize: 4194304, backups: 10, keepFileExt: true, compress: true, daysToKeep: 20 }
+        BlockchainFile: {
+            type: 'file',
+            filename: logpath,
+            maxLogSize: 4194304,
+            backups: 10,
+            keepFileExt: true,
+            compress: true,
+            daysToKeep: 20
+        }
     },
     categories: {
-        default: { appenders: ['BlockchainFile'], level: 'trace' }
+        default: {
+            appenders: ['BlockchainFile'],
+            level: 'trace'
+        }
     }
 });
+
 const logger = log4js.getLogger('BlockchainFile');
-const { FileSystemWallet, Gateway } = require("fabric-network");
-module.exports = function(configOBJ) {
+const {
+    FileSystemWallet,
+    Gateway
+} = require("fabric-network");
+
+module.exports = function (configOBJ) {
     var module = {};
     var userName = configOBJ.userName;
     var gatewayDiscovery = configOBJ.gatewayDiscovery;
@@ -27,7 +43,7 @@ module.exports = function(configOBJ) {
         return wallet;
     };
 
-    module.keyExists = async(contractName, func, keyID) => {
+    module.keyExists = async (contractName, func, keyID) => {
         try {
             const wallet = getWallet();
             const exists = await wallet.exists(userName);
@@ -69,7 +85,7 @@ module.exports = function(configOBJ) {
         }
     };
 
-    module.createKeyValue = async(contractName, func, keyID, value) => {
+    module.createKeyValue = async (contractName, func, keyID, value) => {
         try {
             const wallet = getWallet();
             const exists = await wallet.exists(userName);
@@ -111,7 +127,7 @@ module.exports = function(configOBJ) {
         }
     };
 
-    module.updateKeyValue = async(contractName, func, keyID, value) => {
+    module.updateKeyValue = async (contractName, func, keyID, value) => {
         try {
             const wallet = getWallet();
             const exists = await wallet.exists(userName);
@@ -153,7 +169,7 @@ module.exports = function(configOBJ) {
         }
     };
 
-    module.readKeyValue = async(contractName, func, keyID) => {
+    module.readKeyValue = async (contractName, func, keyID) => {
         try {
             const wallet = getWallet();
             const exists = await wallet.exists(userName);
@@ -195,7 +211,7 @@ module.exports = function(configOBJ) {
         }
     };
 
-    module.deleteKeyValue = async(contractName, func, keyID) => {
+    module.deleteKeyValue = async (contractName, func, keyID) => {
         try {
             const wallet = getWallet();
             const exists = await wallet.exists(userName);
@@ -235,7 +251,7 @@ module.exports = function(configOBJ) {
         }
     };
 
-    module.getHistoryForKey = async(contractName, func, keyID) => {
+    module.getHistoryForKey = async (contractName, func, keyID) => {
         try {
             const wallet = getWallet();
             const exists = await wallet.exists(userName);
@@ -276,7 +292,7 @@ module.exports = function(configOBJ) {
         }
     };
 
-    module.getStateByRange = async(contractName, func, startId, endId) => {
+    module.getStateByRange = async (contractName, func, startId, endId) => {
         try {
             const wallet = getWallet();
             const exists = await wallet.exists(userName);
@@ -316,7 +332,7 @@ module.exports = function(configOBJ) {
         }
     };
 
-    module.getQueryResult = async(contractName, func, query) => {
+    module.getQueryResult = async (contractName, func, query) => {
         try {
             const wallet = getWallet();
             const exists = await wallet.exists(userName);

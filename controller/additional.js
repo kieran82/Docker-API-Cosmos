@@ -12,8 +12,8 @@ const checkUserExistsroute = async (req, res) => {
         bearer: "2da17b15-1c5c-446c-b39e-1a8d7933f60a"
       },
       form: {
-        customer_id:  req.params.id
-    },
+        customer_id: req.params.id
+      },
     };
 
     rp(options)
@@ -39,10 +39,7 @@ const checkFipExistsroute = async (req, res) => {
       headers: {
         "content-type": "application/x-www-form-urlencoded"
       },
-      url: sprintf(
-        "https://login.veri.fish/Api/public/v1/product/fip/exists/%s",
-        req.params.id
-      ),
+      url: `https://login.veri.fish/Api/public/v1/product/fip/exists/${req.params.id}`,
       auth: {
         bearer: "2da17b15-1c5c-446c-b39e-1a8d7933f60a"
       }
