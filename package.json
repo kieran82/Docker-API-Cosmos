@@ -20,7 +20,7 @@
         "dateformat": "^3.0.3",
         "express": "^4.17.1",
         "fabric-network": "^1.4.13",
-        "log4js": "^4.5.1",
+        "log4js": "^6.4.0",
         "node-boolify": "^1.0.6",
         "node-stringbuilder": "^2.2.4",
         "path": "^0.12.7",
